@@ -354,3 +354,4 @@ C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\De
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.pdb
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.genruntimeconfig.cache
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\ref\SmartComplaint.dll
+C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.sourcelink.json

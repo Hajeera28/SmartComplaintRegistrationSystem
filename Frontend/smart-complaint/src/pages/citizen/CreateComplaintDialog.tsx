@@ -14,6 +14,7 @@ import {
   Paper,
   Grid,
   LinearProgress,
+  Alert,
 } from "@mui/material";
 import {
   ReportProblem,
@@ -24,7 +25,8 @@ import {
   Title,
   CloudUpload
 } from "@mui/icons-material";
-import { createComplaint, getDepartments, getCategories } from "../api/complaint.api";
+import { createComplaint, getDepartments, getCategories } from "../../api/complaint.api";
+import { toast } from 'react-toastify';
 
 interface Props {
   open: boolean;
@@ -46,6 +48,14 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
   const [categories, setCategories] = useState<any[]>([]);
   const [filteredCategories, setFilteredCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    location: "",
+    departmentId: "",
+    categoryId: "",
+    image: ""
+  });
 
   useEffect(() => {
     if (open) {
@@ -80,11 +90,77 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {
+      title: "",
+      description: "",
+      location: "",
+      departmentId: "",
+      categoryId: "",
+      image: ""
+    };
+
+    // Title validation
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required";
+    } else if (formData.title.trim().length < 10) {
+      newErrors.title = "Title must be at least 10 characters";
+    } else if (formData.title.trim().length > 100) {
+      newErrors.title = "Title must not exceed 100 characters";
+    }
+
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (formData.description.trim().length < 20) {
+      newErrors.description = "Description must be at least 20 characters";
+    } else if (formData.description.trim().length > 500) {
+      newErrors.description = "Description must not exceed 500 characters";
+    }
+
+    // Location validation
+    if (!formData.location.trim()) {
+      newErrors.location = "Location is required";
+    } else if (formData.location.trim().length < 5) {
+      newErrors.location = "Location must be at least 5 characters";
+    }
+
+    // Department validation
+    if (formData.departmentId === 0) {
+      newErrors.departmentId = "Please select a department";
+    }
+
+    // Category validation
+    if (formData.categoryId === 0) {
+      newErrors.categoryId = "Please select a category";
+    }
+
+    // Image validation
+    if (image) {
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      
+      if (image.size > maxSize) {
+        newErrors.image = "Image size must be less than 5MB";
+      } else if (!allowedTypes.includes(image.type)) {
+        newErrors.image = "Only JPEG, PNG, and GIF images are allowed";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every(error => error === "");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!citizenId) {
-      alert('User session expired. Please login again.');
+      toast.error('User session expired. Please login again.');
+      return;
+    }
+
+    if (!validateForm()) {
+      toast.error('Please fix the validation errors before submitting.');
       return;
     }
     
@@ -95,14 +171,12 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
         citizenId,
         image: image || undefined,
       });
-      alert('Complaint submitted successfully!');
+      toast.success('Complaint submitted successfully!');
       handleClose();
       onSuccess();
     } catch (error: any) {
       console.error("Failed to create complaint:", error);
-      console.error("Error response:", error.response?.data);
-      console.error("Error status:", error.response?.status);
-      alert(`Failed to create complaint: ${error.response?.data?.message || error.message}`);
+      toast.error(`Failed to create complaint: ${error.response?.data?.message || error.message}`);
     } finally {
       setLoading(false);
     }
@@ -117,6 +191,14 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
       categoryId: 0,
     });
     setImage(null);
+    setErrors({
+      title: "",
+      description: "",
+      location: "",
+      departmentId: "",
+      categoryId: "",
+      image: ""
+    });
     onClose();
   };
 
@@ -165,8 +247,9 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                       label="Complaint Title"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      required
                       fullWidth
+                      error={!!errors.title}
+                      helperText={errors.title || `${formData.title.length}/100 characters`}
                       InputProps={{
                         startAdornment: <Title sx={{ color: "#6b7280", mr: 1 }} />
                       }}
@@ -184,8 +267,9 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                       rows={3}
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      required
                       fullWidth
+                      error={!!errors.description}
+                      helperText={errors.description || `${formData.description.length}/500 characters`}
                       placeholder="Describe the issue in detail..."
                       InputProps={{
                         startAdornment: <Description sx={{ color: "#6b7280", mr: 1, alignSelf: "flex-start", mt: 1 }} />
@@ -202,8 +286,9 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                       label="Location"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      required
                       fullWidth
+                      error={!!errors.location}
+                      helperText={errors.location}
                       placeholder="Enter the exact location"
                       InputProps={{
                         startAdornment: <LocationOn sx={{ color: "#6b7280", mr: 1 }} />
@@ -232,8 +317,9 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                       label="Department"
                       value={formData.departmentId}
                       onChange={(e) => setFormData({ ...formData, departmentId: Number(e.target.value) })}
-                      required
                       fullWidth
+                      error={!!errors.departmentId}
+                      helperText={errors.departmentId}
                       InputProps={{
                         startAdornment: <Business sx={{ color: "#6b7280", mr: 1 }} />
                       }}
@@ -260,9 +346,10 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                       label="Category"
                       value={formData.categoryId}
                       onChange={(e) => setFormData({ ...formData, categoryId: Number(e.target.value) })}
-                      required
                       fullWidth
                       disabled={formData.departmentId === 0}
+                      error={!!errors.categoryId}
+                      helperText={errors.categoryId}
                       InputProps={{
                         startAdornment: <Category sx={{ color: "#6b7280", mr: 1 }} />
                       }}
@@ -318,6 +405,11 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                     style={{ display: "none" }}
                     id="image-upload"
                   />
+                  {errors.image && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                      {errors.image}
+                    </Alert>
+                  )}
                   <label htmlFor="image-upload">
                     <Button
                       component="span"

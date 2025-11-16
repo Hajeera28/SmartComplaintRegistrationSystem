@@ -13,7 +13,7 @@ export default function Footer() {
     }}>
       <Container maxWidth="lg">
         <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" fontWeight={700} mb={2}>
               Smart Complaint Portal
             </Typography>
@@ -25,7 +25,7 @@ export default function Footer() {
             </Typography>
           </Grid>
           
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" fontWeight={700} mb={2}>
               Quick Links
             </Typography>
@@ -45,7 +45,7 @@ export default function Footer() {
             </Box>
           </Grid>
           
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" fontWeight={700} mb={2}>
               Contact Information
             </Typography>

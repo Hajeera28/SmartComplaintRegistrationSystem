@@ -2,6 +2,8 @@ using SmartComplaint.DTOs;
 using SmartComplaint.Interfaces;
 using SmartComplaint.Models;
 using SmartComplaint.Models.Enums;
+using SmartComplaint.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartComplaint.Services
 {
@@ -9,11 +11,13 @@ namespace SmartComplaint.Services
     {
         private readonly IOfficer _repository;
         private readonly IUser _userRepository;
+        private readonly ComplaintContext _context;
 
-        public OfficerService(IOfficer repository, IUser userRepository)
+        public OfficerService(IOfficer repository, IUser userRepository, ComplaintContext context)
         {
             _repository = repository;
             _userRepository = userRepository;
+            _context = context;
         }
 
         public async Task<OfficerDto.OfficerReadDto> CreateOfficerAsync(OfficerDto.OfficerCreateDto dto, string? proofDocumentPath = null)
@@ -59,6 +63,10 @@ namespace SmartComplaint.Services
             };
 
             var created = await _repository.CreateAsync(officer);
+            
+            // Create notification for admin about new officer registration
+            await CreateAdminNotificationAsync($"New officer registration request from {dto.Name} ({dto.Email}) for {dto.Role} role");
+            
             return MapToReadDto(created);
         }
 
@@ -156,6 +164,34 @@ namespace SmartComplaint.Services
         {
             var officers = await _repository.GetAllAsync();
             return officers.Where(o => !o.IsApproved).Select(MapToReadDto);
+        }
+
+        private async Task CreateAdminNotificationAsync(string message)
+        {
+            try
+            {
+                // Get admin user (assuming first admin user)
+                var adminUser = _context.Users.FirstOrDefault(u => u.Role == UserRole.Admin);
+                if (adminUser != null)
+                {
+                    var notification = new Notification
+                    {
+                        Message = message,
+                        OfficerId = adminUser.UserId.ToString(),
+                        CreatedAt = DateTime.Now,
+                        IsRead = false,
+                        IsActive = true
+                    };
+                    
+                    _context.Notifications.Add(notification);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't fail the main operation
+                Console.WriteLine($"Failed to create admin notification: {ex.Message}");
+            }
         }
 
         private static OfficerDto.OfficerReadDto MapToReadDto(Officer officer)

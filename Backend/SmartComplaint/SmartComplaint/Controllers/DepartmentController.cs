@@ -30,7 +30,8 @@ namespace SmartComplaint.Controllers
         {
             var department = new Department
             {
-                DepartmentName = dto.DepartmentName
+                DepartmentName = dto.DepartmentName,
+                Description = dto.Description
             };
 
             _context.Departments.Add(department);
@@ -38,13 +39,38 @@ namespace SmartComplaint.Controllers
 
             return Ok(new { 
                 department.DepartmentId, 
-                department.DepartmentName 
+                department.DepartmentName,
+                department.Description
             });
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            var department = await _context.Departments.FindAsync(id);
+            if (department == null)
+            {
+                return NotFound("Department not found");
+            }
+
+            // Check if department has categories
+            var hasCategories = await _context.Categories.AnyAsync(c => c.DepartmentId == id);
+            if (hasCategories)
+            {
+                return BadRequest("Cannot delete department with existing categories");
+            }
+
+            _context.Departments.Remove(department);
+            await _context.SaveChangesAsync();
+
+            return Ok("Department deleted successfully");
         }
     }
 
     public class CreateDepartmentDto
     {
         public string DepartmentName { get; set; }
+        public string? Description { get; set; }
     }
 }

@@ -11,15 +11,19 @@ namespace SmartComplaint.Controllers
     public class OfficerController : ControllerBase
     {
         private readonly OfficerService _service;
+        private readonly ILogger<OfficerController> _logger;
 
-        public OfficerController(OfficerService service)
+        public OfficerController(OfficerService service, ILogger<OfficerController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<OfficerDto.OfficerReadDto>> RegisterOfficer([FromForm] OfficerDto.OfficerCreateDto dto)
         {
+            _logger.LogInformation("Officer registration attempt for email: {Email}, role: {Role}", dto.Email, dto.Role);
+            
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -45,10 +49,12 @@ namespace SmartComplaint.Controllers
                 var proofDocumentPath = $"/proofs/{fileName}";
                 
                 var result = await _service.CreateOfficerAsync(dto, proofDocumentPath);
+                _logger.LogInformation("Officer registered successfully with ID: {OfficerId}", result.OfficerId);
                 return CreatedAtAction(nameof(GetOfficerById), new { id = result.OfficerId }, result);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to register officer with email: {Email}", dto.Email);
                 return BadRequest(ex.Message);
             }
         }
@@ -97,11 +103,27 @@ namespace SmartComplaint.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ApproveOfficer(string id)
         {
+            _logger.LogInformation("Approving officer with ID: {OfficerId}", id);
+            
             if (string.IsNullOrEmpty(id))
                 return BadRequest("Invalid officer ID");
 
-            var approved = await _service.ApproveOfficerAsync(id);
-            return approved ? Ok("Officer approved successfully") : NotFound();
+            try
+            {
+                var approved = await _service.ApproveOfficerAsync(id);
+                if (approved)
+                {
+                    _logger.LogInformation("Officer approved successfully: {OfficerId}", id);
+                    return Ok("Officer approved successfully");
+                }
+                _logger.LogWarning("Officer not found for approval: {OfficerId}", id);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to approve officer: {OfficerId}", id);
+                return BadRequest("Failed to approve officer");
+            }
         }
 
         [HttpDelete("{id}/deny")]

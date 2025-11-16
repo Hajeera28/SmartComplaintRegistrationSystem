@@ -1,8 +1,9 @@
 import React, { useState, useEffect, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login, registerCitizen, registerOfficer } from "../api/auth.api";
-import { getDepartments } from "../api/department.api";
-import { tokenstore } from "../auth/tokenstore";
+import { toast } from 'react-toastify';
+import { login, registerCitizen, registerOfficer } from "../../api/auth.api";
+import { getDepartments } from "../../api/department.api";
+import { tokenstore } from "../../auth/tokenstore";
 import {
   Box,
   Container,
@@ -28,7 +29,7 @@ import {
   ArrowBack,
   CloudUpload
 } from "@mui/icons-material";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 
 export default function GetStarted() {
   const navigate = useNavigate();
@@ -115,8 +116,6 @@ export default function GetStarted() {
     }
   ];
 
-
-
   const getFieldSx = (color: string) => ({
     '& .MuiOutlinedInput-root': {
       borderRadius: 3,
@@ -201,6 +200,7 @@ export default function GetStarted() {
         navigate("/citizen", { replace: true });
       }
     } catch (err: any) {
+      toast.error("Invalid email or password. Please try again.");
       setApiError("Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
@@ -315,25 +315,14 @@ export default function GetStarted() {
         });
       }
       
-      alert(`${isCitizen ? 'Citizen' : 'Officer'} registered successfully! Please login.`);
+      if (isCitizen) {
+        toast.success('Citizen registered successfully! Please login.');
+      } else {
+        toast.success('Registration successful! Wait for the admin approval.');
+      }
       setCurrentCard(0);
     } catch (err: any) {
       console.error('Registration error:', err.response?.data);
-      console.error('Registration data sent:', isCitizen ? {
-        name: registerData.name.trim(),
-        email: registerData.email.toLowerCase().trim(),
-        password: registerData.password,
-        phone: registerData.phone,
-        address: registerData.address.trim(),
-        state: registerData.state.trim(),
-      } : {
-        name: registerData.name.trim(),
-        email: registerData.email.toLowerCase().trim(),
-        password: registerData.password,
-        state: registerData.state.trim(),
-        departmentId: registerData.departmentId,
-        role: registerData.role,
-      });
       let errorMessage = "Registration failed. Please try again.";
       
       if (err.response?.data) {
@@ -350,6 +339,7 @@ export default function GetStarted() {
         }
       }
       
+      toast.error(errorMessage);
       setApiError(errorMessage);
     } finally {
       setLoading(false);

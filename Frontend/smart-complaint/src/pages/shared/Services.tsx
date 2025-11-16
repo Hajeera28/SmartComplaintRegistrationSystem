@@ -24,8 +24,8 @@ import {
   Security,
   Park
 } from '@mui/icons-material';
-import { getAllDepartments, getAllCategories } from '../api/department.api';
-import AppNavbar from '../components/AppNavbar';
+import { getAllDepartments, getAllCategories } from '../../api/department.api';
+import AppNavbar from '../../components/AppNavbar';
 
 interface Department {
   departmentId: number;
@@ -128,7 +128,7 @@ export default function Services() {
                 border: `2px solid ${getDepartmentColor(currentDept)}20`
               }}>
                 <Grid container spacing={4} alignItems="center">
-                  <Grid item xs={12} md={4}>
+                  <Grid size={{ xs: 12, md: 4 }}>
                     <Box textAlign="center">
                       <Avatar sx={{ 
                         width: 120, 
@@ -144,13 +144,13 @@ export default function Services() {
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} md={8}>
+                  <Grid size={{ xs: 12, md: 8 }}>
                     <Typography variant="h6" mb={3} color="#1e293b">
                       Available Services:
                     </Typography>
                     <Grid container spacing={2}>
                       {getCurrentDepartmentCategories().map((category) => (
-                        <Grid item xs={12} sm={6} key={category.categoryId}>
+                        <Grid size={{ xs: 12, sm: 6 }} key={category.categoryId}>
                           <Chip 
                             label={category.categoryName}
                             sx={{ 

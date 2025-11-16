@@ -20,7 +20,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from "@mui/icons-material";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 
 export default function LandingPage() {
   const navigate = useNavigate();

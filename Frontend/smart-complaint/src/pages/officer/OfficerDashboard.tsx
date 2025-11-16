@@ -46,14 +46,15 @@ import {
   Download as DownloadIcon,
   CloudUpload
 } from "@mui/icons-material";
-import { getComplaintsByOfficer, updateComplaintStatus, getComplaintById, getAllComplaints } from "../api/complaint.api";
-import { getGrievancesByOfficer, updateGrievanceStatus, getAllGrievances } from "../api/grievance.api";
-import { getOfficerByUserId } from "../api/admin.api";
-import { type Complaint } from "../types/Complaint";
-import { type Grievance } from "../types/Grievance";
-import { tokenstore } from "../auth/tokenstore";
-import AppNavbar from "../components/AppNavbar";
-import Footer from "../components/Footer";
+import { getComplaintsByOfficer, updateComplaintStatus, getComplaintById, getAllComplaints } from "../../api/complaint.api";
+import { getGrievancesByOfficer, updateGrievanceStatus, getAllGrievances } from "../../api/grievance.api";
+import { getOfficerByUserId } from "../../api/admin.api";
+import { type Complaint } from "../../types/Complaint";
+import { type Grievance } from "../../types/Grievance";
+import { tokenstore } from "../../auth/tokenstore";
+import AppNavbar from "../../components/AppNavbar";
+import Footer from "../../components/Footer";
+import { toast } from 'react-toastify';
 
 export default function OfficerDashboard() {
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ export default function OfficerDashboard() {
       console.log('Officer data received:', officer);
       
       if (!officer) {
-        alert('Officer profile not found');
+        toast.error('Officer profile not found');
         navigate('/login');
         return;
       }
@@ -280,13 +281,13 @@ export default function OfficerDashboard() {
         updateData.officerRemarks,
         proofFile || undefined
       );
-      alert("Complaint status updated successfully!");
+      toast.success("Complaint status updated successfully!");
       setOpenDialog(false);
       setProofFile(null);
       loadComplaints();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update complaint:", error);
-      alert("Failed to update complaint status");
+      toast.error(error?.response?.data?.message || 'Failed to update complaint status');
     }
   };
 
@@ -335,11 +336,11 @@ export default function OfficerDashboard() {
           : g
       ));
       
-      alert("Grievance status updated successfully!");
+      toast.success("Grievance status updated successfully!");
       setOpenGrievanceDialog(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update grievance:", error);
-      alert("Failed to update grievance status");
+      toast.error(error?.response?.data?.message || 'Failed to update grievance status');
     }
   };
 
@@ -348,9 +349,9 @@ export default function OfficerDashboard() {
       const complaint = await getComplaintById(complaintId);
       setComplaintDetails(complaint);
       setOpenComplaintDialog(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to load complaint details:", error);
-      alert("Failed to load complaint details");
+      toast.error(error?.response?.data?.message || 'Failed to load complaint details');
     }
   };
 

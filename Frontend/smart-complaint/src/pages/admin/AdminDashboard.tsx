@@ -47,13 +47,14 @@ import {
   Delete
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { getAllComplaints } from "../api/complaint.api";
-import { getAllOfficers, getAllCitizens, approveOfficer, denyOfficer, type Officer, type CitizenInfo } from "../api/admin.api";
-import { getAllDepartments, getAllCategories, addDepartment, addCategory, deleteCategory, type Department, type Category } from "../api/department.api";
-import { getAllGrievances, updateGrievanceStatus, type Grievance } from "../api/grievance.api";
-import { type Complaint } from "../types/Complaint";
-import AppNavbar from "../components/AppNavbar";
-import Footer from "../components/Footer";
+import { getAllComplaints } from "../../api/complaint.api";
+import { getAllOfficers, getAllCitizens, approveOfficer, denyOfficer, type Officer, type CitizenInfo } from "../../api/admin.api";
+import { getAllDepartments, getAllCategories, addDepartment, addCategory, deleteCategory, deleteDepartment, type Department, type Category } from "../../api/department.api";
+import { toast } from 'react-toastify';
+import { getAllGrievances, updateGrievanceStatus, type Grievance } from "../../api/grievance.api";
+import { type Complaint } from "../../types/Complaint";
+import AppNavbar from "../../components/AppNavbar";
+import Footer from "../../components/Footer";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -72,47 +73,72 @@ export default function AdminDashboard() {
   const [grievances, setGrievances] = useState<Grievance[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [addDialog, setAddDialog] = useState({ open: false, type: '', item: '', departmentId: 0 });
+  const [addDialog, setAddDialog] = useState({ open: false, type: '', item: '', description: '', departmentId: 0 });
   const [grievanceDialog, setGrievanceDialog] = useState({ open: false, grievance: null as Grievance | null, remarks: '' });
+  const [confirmDialog, setConfirmDialog] = useState({ open: false, title: '', message: '', onConfirm: () => {} });
 
   useEffect(() => {
     loadAllData();
     
-    // Poll for grievance updates every 45 seconds
+    // Poll for grievance updates every 2 minutes (reduced frequency)
     const interval = setInterval(() => {
-      getAllGrievances()
-        .then(data => setGrievances(data))
-        .catch(() => {});
-    }, 45000);
+      if (tabValue === 1) { // Only poll when grievances tab is active
+        getAllGrievances()
+          .then(data => setGrievances(data))
+          .catch(() => {});
+      }
+    }, 120000); // 2 minutes instead of 45 seconds
     
     return () => clearInterval(interval);
-  }, []);
+  }, [tabValue]);
 
   const loadAllData = async () => {
     try {
       setLoading(true);
-      const [complaintsData, officersData, citizensData, departmentsData, categoriesData, grievancesData] = await Promise.all([
+      // Load only essential data initially
+      const [complaintsData, officersData] = await Promise.all([
         getAllComplaints(),
-        getAllOfficers(),
-        getAllCitizens(),
-        getAllDepartments(),
-        getAllCategories(),
-        getAllGrievances()
+        getAllOfficers()
       ]);
       setComplaints(complaintsData);
       setOfficers(officersData);
-      setCitizens(citizensData);
-      setDepartments(departmentsData);
-      setCategories(categoriesData);
-      setGrievances(grievancesData);
       calculateStats(complaintsData);
-      console.log('Officers data:', officersData);
-      console.log('Officers with proof:', officersData.filter(o => o.proofDocumentPath));
     } catch (error: any) {
       console.error("Failed to load data:", error);
-      alert(error?.response?.data?.message || 'Failed to load dashboard data');
+      toast.error(error?.response?.data?.message || 'Failed to load dashboard data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadTabData = async (tabIndex: number) => {
+    try {
+      switch (tabIndex) {
+        case 1: // Grievances
+          if (grievances.length === 0) {
+            const grievancesData = await getAllGrievances();
+            setGrievances(grievancesData);
+          }
+          break;
+        case 2: // Departments
+          if (departments.length === 0 || categories.length === 0) {
+            const [departmentsData, categoriesData] = await Promise.all([
+              getAllDepartments(),
+              getAllCategories()
+            ]);
+            setDepartments(departmentsData);
+            setCategories(categoriesData);
+          }
+          break;
+        case 4: // Citizens
+          if (citizens.length === 0) {
+            const citizensData = await getAllCitizens();
+            setCitizens(citizensData);
+          }
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to load tab data:', error);
     }
   };
 
@@ -123,18 +149,18 @@ export default function AdminDashboard() {
     
     try {
       if (addDialog.type === 'department') {
-        const newDepartment = await addDepartment(addDialog.item);
+        const newDepartment = await addDepartment(addDialog.item, addDialog.description);
         setDepartments([...departments, newDepartment]);
       } else if (addDialog.type === 'category' && addDialog.departmentId) {
         const newCategory = await addCategory(addDialog.item, addDialog.departmentId);
         setCategories([...categories, newCategory]);
       }
       
-      setAddDialog({ open: false, type: '', item: '', departmentId: 0 });
-      alert(`${addDialog.type === 'department' ? 'Department' : 'Category'} added successfully!`);
+      setAddDialog({ open: false, type: '', item: '', description: '', departmentId: 0 });
+      toast.success(`${addDialog.type === 'department' ? 'Department' : 'Category'} added successfully!`);
     } catch (error: any) {
       console.error(`Failed to add ${addDialog.type}:`, error);
-      alert(error?.response?.data?.message || `Failed to add ${addDialog.type}. Please try again.`);
+      toast.error(error?.response?.data?.message || `Failed to add ${addDialog.type}. Please try again.`);
     }
   };
 
@@ -143,16 +169,51 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteCategory = async (categoryId: number) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-    
-    try {
-      await deleteCategory(categoryId);
-      setCategories(categories.filter(cat => cat.categoryId !== categoryId));
-      alert('Category deleted successfully!');
-    } catch (error: any) {
-      console.error('Failed to delete category:', error);
-      alert(error?.response?.data?.message || 'Failed to delete category. Please try again.');
+    setConfirmDialog({
+      open: true,
+      title: 'Delete Category',
+      message: 'Are you sure you want to delete this category? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await deleteCategory(categoryId);
+          setCategories(categories.filter(cat => cat.categoryId !== categoryId));
+          toast.success('Category deleted successfully!');
+        } catch (error: any) {
+          console.error('Failed to delete category:', error);
+          toast.error(error?.response?.data?.message || 'Failed to delete category. Please try again.');
+        }
+        setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} });
+      }
+    });
+  };
+
+  const handleDeleteDepartment = async (departmentId: number) => {
+    const deptCategories = getCategoriesByDepartment(departmentId);
+    if (deptCategories.length > 0) {
+      toast.error('Cannot delete department with existing categories. Please delete all categories first.');
+      return;
     }
+
+    setConfirmDialog({
+      open: true,
+      title: 'Delete Department',
+      message: 'Are you sure you want to delete this department? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          console.log('Attempting to delete department with ID:', departmentId);
+          await deleteDepartment(departmentId);
+          setDepartments(departments.filter(dept => dept.departmentId !== departmentId));
+          toast.success('Department deleted successfully!');
+        } catch (error: any) {
+          console.error('Failed to delete department:', error);
+          console.error('Error response:', error?.response);
+          console.error('Error status:', error?.response?.status);
+          console.error('Error data:', error?.response?.data);
+          toast.error(error?.response?.data?.message || `Failed to delete department. Status: ${error?.response?.status || 'Unknown'}`);
+        }
+        setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} });
+      }
+    });
   };
 
   const handleApproveOfficer = async (officerId: string) => {
@@ -161,24 +222,30 @@ export default function AdminDashboard() {
       setOfficers(officers.map(o => 
         o.officerId === officerId ? { ...o, isApproved: true } : o
       ));
-      alert('Officer approved successfully!');
+      toast.success('Officer approved successfully!');
     } catch (error: any) {
       console.error('Failed to approve officer:', error);
-      alert(error?.response?.data?.message || 'Failed to approve officer. Please try again.');
+      toast.error(error?.response?.data?.message || 'Failed to approve officer. Please try again.');
     }
   };
 
   const handleDenyOfficer = async (officerId: string) => {
-    if (!confirm('Are you sure you want to deny this officer registration?')) return;
-    
-    try {
-      await denyOfficer(officerId);
-      setOfficers(officers.filter(o => o.officerId !== officerId));
-      alert('Officer registration denied successfully!');
-    } catch (error: any) {
-      console.error('Failed to deny officer:', error);
-      alert(error?.response?.data?.message || 'Failed to deny officer. Please try again.');
-    }
+    setConfirmDialog({
+      open: true,
+      title: 'Deny Officer Registration',
+      message: 'Are you sure you want to deny this officer registration? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          await denyOfficer(officerId);
+          setOfficers(officers.filter(o => o.officerId !== officerId));
+          toast.success('Officer registration denied successfully!');
+        } catch (error: any) {
+          console.error('Failed to deny officer:', error);
+          toast.error(error?.response?.data?.message || 'Failed to deny officer. Please try again.');
+        }
+        setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} });
+      }
+    });
   };
 
   const handleGrievanceAction = async (action: 'resolve' | 'reject') => {
@@ -196,7 +263,7 @@ export default function AdminDashboard() {
           : g
       ));
       
-      alert(`Grievance ${action}d successfully!`);
+      toast.success(`Grievance ${action}d successfully!`);
       setGrievanceDialog({ open: false, grievance: null, remarks: '' });
       
       // Delay reload to prevent override
@@ -205,7 +272,7 @@ export default function AdminDashboard() {
       }, 2000);
     } catch (error: any) {
       console.error(`Failed to ${action} grievance:`, error);
-      alert(error?.response?.data?.message || `Failed to ${action} grievance. Please try again.`);
+      toast.error(error?.response?.data?.message || `Failed to ${action} grievance. Please try again.`);
     }
   };
 
@@ -329,20 +396,23 @@ export default function AdminDashboard() {
 
         {/* Statistics Cards */}
         <Grid container spacing={4} mb={4}>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <StatCard title="Total Complaints" value={stats.total} color="#3b82f6" icon={<ReportProblem />} />
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <StatCard title="Pending" value={stats.pending} color="#f59e0b" icon={<Pending />} />
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <StatCard title="In Progress" value={stats.inProgress} color="#06b6d4" icon={<PlayArrow />} />
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <StatCard title="Resolved" value={stats.resolved} color="#10b981" icon={<CheckCircle />} />
           </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <StatCard title="Closed" value={stats.closed} color="#6b7280" icon={<Assignment />} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <StatCard title="Officer Approvals" value={officers.filter(o => !o.isApproved).length} color="#ef4444" icon={<PersonAdd />} />
           </Grid>
         </Grid>
 
@@ -351,7 +421,10 @@ export default function AdminDashboard() {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs 
               value={tabValue} 
-              onChange={(_, v) => setTabValue(v)}
+              onChange={(_, v) => {
+                setTabValue(v);
+                loadTabData(v);
+              }}
               sx={{
                 "& .MuiTab-root": {
                   textTransform: "none",
@@ -486,7 +559,7 @@ export default function AdminDashboard() {
                 <Button
                   variant="contained"
                   startIcon={<Add />}
-                  onClick={() => setAddDialog({ open: true, type: 'department', item: '', departmentId: 0 })}
+                  onClick={() => setAddDialog({ open: true, type: 'department', item: '', description: '', departmentId: 0 })}
                   sx={{ textTransform: 'none' }}
                 >
                   Add Department
@@ -496,7 +569,7 @@ export default function AdminDashboard() {
                 {departments.map((dept) => {
                   const deptCategories = getCategoriesByDepartment(dept.departmentId);
                   return (
-                    <Grid item xs={12} key={dept.departmentId}>
+                    <Grid size={{ xs: 12 }} key={dept.departmentId}>
                       <Card sx={{ borderRadius: 3, boxShadow: "0 4px 20px rgba(0,0,0,0.1)", border: "1px solid #e5e7eb" }}>
                         <CardContent sx={{ p: 3 }}>
                           <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
@@ -506,20 +579,34 @@ export default function AdminDashboard() {
                               </Avatar>
                               <Box>
                                 <Typography variant="h6" fontWeight={700}>{dept.departmentName}</Typography>
+                                {dept.description && (
+                                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                                    {dept.description}
+                                  </Typography>
+                                )}
                                 <Typography variant="body2" color="text.secondary">
                                   {complaints.filter(c => c.departmentName === dept.departmentName).length} Active Complaints
                                 </Typography>
                               </Box>
                             </Box>
-                            <Button
-                              variant="outlined"
-                              size="small"
-                              startIcon={<Add />}
-                              onClick={() => setAddDialog({ open: true, type: 'category', item: '', departmentId: dept.departmentId })}
-                              sx={{ textTransform: 'none' }}
-                            >
-                              Add Category
-                            </Button>
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<Add />}
+                                onClick={() => setAddDialog({ open: true, type: 'category', item: '', description: '', departmentId: dept.departmentId })}
+                                sx={{ textTransform: 'none' }}
+                              >
+                                Add Category
+                              </Button>
+                              <IconButton
+                                size="small"
+                                onClick={() => handleDeleteDepartment(dept.departmentId)}
+                                sx={{ color: "#ef4444" }}
+                              >
+                                <Delete sx={{ fontSize: 20 }} />
+                              </IconButton>
+                            </Box>
                           </Box>
                           
                           <Typography variant="subtitle2" mb={2} color="#374151">
@@ -528,7 +615,7 @@ export default function AdminDashboard() {
                           
                           <Grid container spacing={2}>
                             {deptCategories.map((category) => (
-                              <Grid item xs={12} sm={6} md={4} key={category.categoryId}>
+                              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={category.categoryId}>
                                 <Card sx={{ borderRadius: 2, border: "1px solid #e5e7eb", bgcolor: "#f9fafb" }}>
                                   <CardContent sx={{ p: 2 }}>
                                     <Box display="flex" alignItems="center" gap={2}>
@@ -550,7 +637,7 @@ export default function AdminDashboard() {
                             ))}
                             
                             {deptCategories.length === 0 && (
-                              <Grid item xs={12}>
+                              <Grid size={{ xs: 12 }}>
                                 <Box sx={{ textAlign: 'center', py: 2, color: 'text.secondary' }}>
                                   <Typography variant="body2">No categories added yet</Typography>
                                 </Box>
@@ -646,9 +733,21 @@ export default function AdminDashboard() {
               sx={{ mt: 2 }}
               placeholder={addDialog.type === 'department' ? 'e.g., Traffic Police' : 'e.g., Signal Malfunction'}
             />
+            {addDialog.type === 'department' && (
+              <TextField
+                fullWidth
+                label="Department Description"
+                value={addDialog.description}
+                onChange={(e) => setAddDialog({ ...addDialog, description: e.target.value })}
+                sx={{ mt: 2 }}
+                multiline
+                rows={2}
+                placeholder="e.g., Handles traffic violations and road safety issues"
+              />
+            )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setAddDialog({ open: false, type: '', item: '', departmentId: 0 })}>Cancel</Button>
+            <Button onClick={() => setAddDialog({ open: false, type: '', item: '', description: '', departmentId: 0 })}>Cancel</Button>
             <Button onClick={handleAddItem} variant="contained" disabled={!addDialog.item.trim()}>
               Add {addDialog.type === 'department' ? 'Department' : 'Category'}
             </Button>
@@ -704,6 +803,20 @@ export default function AdminDashboard() {
             </Button>
             <Button onClick={() => handleGrievanceAction('resolve')} variant="contained" color="success">
               Resolve
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Confirmation Dialog */}
+        <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} })} maxWidth="sm" fullWidth>
+          <DialogTitle>{confirmDialog.title}</DialogTitle>
+          <DialogContent>
+            <Typography>{confirmDialog.message}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} })}>Cancel</Button>
+            <Button onClick={confirmDialog.onConfirm} variant="contained" color="error">
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>

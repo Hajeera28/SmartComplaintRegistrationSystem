@@ -38,10 +38,11 @@ import {
   LocationOn,
   Dashboard as DashboardIcon
 } from "@mui/icons-material";
-import { getAllComplaints } from "../api/complaint.api";
-import { getAllOfficers, assignComplaint, type Officer } from "../api/admin.api";
-import { type Complaint } from "../types/Complaint";
-import AppNavbar from "../components/AppNavbar";
+import { getAllComplaints } from "../../api/complaint.api";
+import { getAllOfficers, assignComplaint, type Officer } from "../../api/admin.api";
+import { type Complaint } from "../../types/Complaint";
+import AppNavbar from "../../components/AppNavbar";
+import { toast } from 'react-toastify';
 
 export default function ComplaintAssignment() {
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -96,9 +97,9 @@ export default function ComplaintAssignment() {
         open: true, 
         message: `Complaint successfully assigned to ${officerName}` 
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to assign complaint:", error);
-      alert("Failed to assign complaint");
+      toast.error(error?.response?.data?.message || 'Failed to assign complaint. Please try again.');
     }
   };
 

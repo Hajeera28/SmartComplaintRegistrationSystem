@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   IconButton,
   Badge,
@@ -16,39 +16,16 @@ import {
   Circle as CircleIcon,
   CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
-import { getUnreadNotificationsByOfficer, getUnreadNotificationsByCitizen, markNotificationAsRead, markAllNotificationsAsRead, markAllNotificationsAsReadByCitizen, type Notification } from '../api/notification.api';
+import { markNotificationAsRead, markAllNotificationsAsRead, markAllNotificationsAsReadByCitizen } from '../api/notification.api';
 import { tokenstore } from '../auth/tokenstore';
+import { useNotifications } from '../contexts/NotificationContext';
 
 export default function NotificationBell() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
+  const { notifications, removeNotification, clearAllNotifications } = useNotifications();
 
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    loadNotifications();
-    const interval = setInterval(loadNotifications, 30000); // Poll every 30 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadNotifications = async () => {
-    try {
-      const userId = tokenstore.getUserId();
-      const userRole = tokenstore.getRole();
-      if (!userId) return;
-      
-      let data: Notification[] = [];
-      if (userRole === 'Officer' || userRole === 'Admin') {
-        data = await getUnreadNotificationsByOfficer(userId);
-      } else if (userRole === 'Citizen') {
-        data = await getUnreadNotificationsByCitizen(userId);
-      }
-      setNotifications(data);
-    } catch (error) {
-      console.error('Failed to load notifications:', error);
-    }
-  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +38,7 @@ export default function NotificationBell() {
   const handleMarkAsRead = async (notificationId: number) => {
     try {
       await markNotificationAsRead(notificationId);
-      setNotifications(prev => prev.filter(n => n.notificationId !== notificationId));
+      removeNotification(notificationId);
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
     }
@@ -79,7 +56,7 @@ export default function NotificationBell() {
       } else if (userRole === 'Citizen') {
         await markAllNotificationsAsReadByCitizen(userId);
       }
-      setNotifications([]);
+      clearAllNotifications();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
     } finally {

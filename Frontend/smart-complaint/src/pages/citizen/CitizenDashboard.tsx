@@ -9,9 +9,6 @@ import {
   CardContent,
   Chip,
   Avatar,
-  Divider,
-  LinearProgress,
-  Paper,
   Stack,
   Dialog,
   DialogTitle,
@@ -19,21 +16,10 @@ import {
   DialogActions,
   TextField,
   Alert,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  CardMedia,
   IconButton
 } from "@mui/material";
 import { 
   Add as AddIcon, 
-  LocationOn, 
-  CalendarToday, 
-  Category,
-  Business,
   Assignment,
   CheckCircle,
   Pending,
@@ -46,23 +32,17 @@ import {
   DirectionsBus,
   WaterDrop,
   ElectricalServices,
-  Security,
-  Park,
   ChevronLeft,
-  ChevronRight,
-  Email,
-  Phone,
-  LocationCity
+  ChevronRight
 } from "@mui/icons-material";
-import { getComplaintsByCitizen } from "../api/complaint.api";
-import { getDepartments } from "../api/department.api";
-import { type Complaint } from "../types/Complaint";
-import { type Department } from "../types/Department";
+import { toast } from 'react-toastify';
+import { getComplaintsByCitizen } from "../../api/complaint.api";
+import { type Complaint } from "../../types/Complaint";
 import CreateComplaintDialog from "./CreateComplaintDialog";
-import AppNavbar from "../components/AppNavbar";
-import Footer from "../components/Footer";
+import AppNavbar from "../../components/AppNavbar";
+import Footer from "../../components/Footer";
 import { useNavigate } from 'react-router-dom';
-import { tokenstore } from '../auth/tokenstore';
+import { tokenstore } from '../../auth/tokenstore';
 
 export default function CitizenDashboard() {
   const navigate = useNavigate();
@@ -75,7 +55,6 @@ export default function CitizenDashboard() {
   const [grievanceReason, setGrievanceReason] = useState("");
   const [grievanceSubmitting, setGrievanceSubmitting] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [departments, setDepartments] = useState<Department[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const services = [
@@ -133,14 +112,14 @@ export default function CitizenDashboard() {
 
   useEffect(() => {
     loadComplaints();
-    loadDepartments();
+
     
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % services.length);
     }, 4000);
     
     return () => clearInterval(interval);
-  }, [services.length]);
+  }, []);
 
   const loadComplaints = async (showRefreshing = false) => {
     try {
@@ -152,7 +131,8 @@ export default function CitizenDashboard() {
       setError("");
       const citizenId = tokenstore.getUserId();
       if (!citizenId) {
-        setError('User session expired. Please login again.');
+        toast.error('User session expired. Please login again.');
+      setError('User session expired. Please login again.');
         return;
       }
       const data = await getComplaintsByCitizen(citizenId);
@@ -160,6 +140,7 @@ export default function CitizenDashboard() {
       setComplaints(data || []);
     } catch (error: any) {
       console.error("Failed to load complaints:", error);
+      toast.error(error?.response?.data?.message || "Failed to load complaints");
       setError(error?.response?.data?.message || "Failed to load complaints");
     } finally {
       setLoading(false);
@@ -167,14 +148,7 @@ export default function CitizenDashboard() {
     }
   };
 
-  const loadDepartments = async () => {
-    try {
-      const data = await getDepartments();
-      setDepartments(data);
-    } catch (error) {
-      console.error("Failed to load departments:", error);
-    }
-  };
+
 
   const scrollToServices = () => {
     const servicesSection = document.getElementById('services-section');
@@ -210,30 +184,12 @@ export default function CitizenDashboard() {
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography color="error">{error}</Typography>
-        <Button onClick={loadComplaints}>Retry</Button>
+        <Button onClick={() => loadComplaints()}>Retry</Button>
       </Container>
     );
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Pending": return <Pending sx={{ color: "#ff9800" }} />;
-      case "InProgress": return <PlayArrow sx={{ color: "#2196f3" }} />;
-      case "Resolved": return <CheckCircle sx={{ color: "#4caf50" }} />;
-      case "Closed": return <Assignment sx={{ color: "#757575" }} />;
-      default: return <Pending sx={{ color: "#ff9800" }} />;
-    }
-  };
 
-  const getProgressValue = (status: string) => {
-    switch (status) {
-      case "Pending": return 25;
-      case "InProgress": return 50;
-      case "Resolved": return 75;
-      case "Closed": return 100;
-      default: return 25;
-    }
-  };
 
   const handleRaiseGrievance = (complaint: Complaint) => {
     setSelectedComplaint(complaint);
@@ -246,7 +202,7 @@ export default function CitizenDashboard() {
     
     const citizenId = tokenstore.getUserId();
     if (!citizenId) {
-      alert('User session expired. Please login again.');
+      toast.error('User session expired. Please login again.');
       return;
     }
     
@@ -254,13 +210,13 @@ export default function CitizenDashboard() {
       setGrievanceSubmitting(true);
       
       // For now, just show success message since backend endpoints may not be ready
-      alert(`Grievance raised successfully for complaint #${selectedComplaint.complaintId}. Your grievance will be reviewed by the administration within 3-5 business days.`);
+      toast.success(`Grievance raised successfully for complaint #${selectedComplaint.complaintId}. Your grievance will be reviewed by the administration within 3-5 business days.`);
       setGrievanceDialog(false);
       setSelectedComplaint(null);
       setGrievanceReason("");
     } catch (error) {
       console.error("Failed to submit grievance:", error);
-      alert("Failed to submit grievance. Please try again.");
+      toast.error("Failed to submit grievance. Please try again.");
     } finally {
       setGrievanceSubmitting(false);
     }
@@ -281,7 +237,7 @@ export default function CitizenDashboard() {
         }}>
           <Container maxWidth="lg">
             <Grid container spacing={4} alignItems="center">
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="h2" fontWeight={800} mb={3} sx={{ 
                   background: "linear-gradient(45deg, #ffffff 30%, #60a5fa 90%)",
                   WebkitBackgroundClip: "text",
@@ -335,7 +291,7 @@ export default function CitizenDashboard() {
                   </Button>
                 </Stack>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ textAlign: "center" }}>
                   <Avatar sx={{ 
                     width: 200, 
@@ -474,7 +430,7 @@ export default function CitizenDashboard() {
           </Box>
 
           <Grid container spacing={4} justifyContent="center">
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card sx={{ 
                 borderRadius: 4,
                 boxShadow: "0 8px 32px rgba(0,0,0,0.1)",

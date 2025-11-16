@@ -569,6 +569,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "SmartComplaint.Controllers.DepartmentController",
+    "Method": "DeleteDepartment",
+    "RelativePath": "api/Department/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SmartComplaint.Controllers.GrievanceController",
     "Method": "GetAllGrievances",
     "RelativePath": "api/Grievance",

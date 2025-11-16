@@ -9,14 +9,14 @@ import {
   Grid,
   Avatar,
   Divider,
-  Alert,
   Fab
 } from '@mui/material';
 import { Person, Save, ArrowBack, Dashboard as DashboardIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getCitizenProfile, updateCitizenProfile, type CitizenProfile } from '../api/profile.api';
-import { tokenstore } from '../auth/tokenstore';
-import AppNavbar from '../components/AppNavbar';
+import { toast } from 'react-toastify';
+import { getCitizenProfile, updateCitizenProfile, type CitizenProfile } from '../../api/profile.api';
+import { tokenstore } from '../../auth/tokenstore';
+import AppNavbar from '../../components/AppNavbar';
 
 export default function CitizenProfile() {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function CitizenProfile() {
       });
     } catch (error) {
       console.error('Failed to load profile:', error);
-      setMessage('Failed to load profile');
+      toast.error('Failed to load profile');
     } finally {
       setLoading(false);
     }
@@ -72,13 +72,13 @@ export default function CitizenProfile() {
       // Validate phone number format (must be 10 digits starting with 6-9)
       const phoneRegex = /^[6-9]\d{9}$/;
       if (profile.phone && !phoneRegex.test(profile.phone)) {
-        setMessage('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+        toast.error('Phone number must be 10 digits starting with 6, 7, 8, or 9');
         return;
       }
       
       // Validate address length
       if (profile.address && profile.address.length > 200) {
-        setMessage('Address must be less than 200 characters');
+        toast.error('Address must be less than 200 characters');
         return;
       }
       
@@ -93,11 +93,11 @@ export default function CitizenProfile() {
       
       console.log('Updating citizen profile:', updateData);
       await updateCitizenProfile(citizenId, updateData);
-      setMessage('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
     } catch (error: any) {
       console.error('Failed to update profile:', error);
       const errorMessage = error?.response?.data?.message || error?.response?.data || 'Failed to update profile';
-      setMessage(errorMessage);
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -135,11 +135,7 @@ export default function CitizenProfile() {
 
           <Divider sx={{ mb: 4 }} />
 
-          {message && (
-            <Alert severity={typeof message === 'string' && message.includes('success') ? 'success' : 'error'} sx={{ mb: 3 }}>
-              {typeof message === 'string' ? message : JSON.stringify(message)}
-            </Alert>
-          )}
+
 
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>

@@ -27,12 +27,13 @@ import {
 } from '@mui/material';
 import { ArrowBack, Support, Assignment, CheckCircle, Pending, PlayArrow, Dashboard as DashboardIcon, Visibility as ViewIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getComplaintsByCitizen, getComplaintById } from '../api/complaint.api';
-import { createGrievance, getGrievancesByCitizen, checkGrievanceExists } from '../api/grievance.api';
-import { type Complaint } from '../types/Complaint';
-import { tokenstore } from '../auth/tokenstore';
-import AppNavbar from '../components/AppNavbar';
-import Footer from '../components/Footer';
+import { getComplaintsByCitizen, getComplaintById } from '../../api/complaint.api';
+import { createGrievance, getGrievancesByCitizen, checkGrievanceExists } from '../../api/grievance.api';
+import { type Complaint } from '../../types/Complaint';
+import { tokenstore } from '../../auth/tokenstore';
+import AppNavbar from '../../components/AppNavbar';
+import Footer from '../../components/Footer';
+import { toast } from 'react-toastify';
 
 export default function ComplaintHistory() {
   const navigate = useNavigate();
@@ -136,9 +137,9 @@ export default function ComplaintHistory() {
       setSelectedComplaintDetails(complaint);
       setOfficerImageError(false); // Reset error state
       setDetailsDialog(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load complaint details:', error);
-      alert('Failed to load complaint details');
+      toast.error(error?.response?.data?.message || 'Failed to load complaint details');
     }
   };
 
@@ -150,7 +151,7 @@ export default function ComplaintHistory() {
       
       const citizenId = tokenstore.getUserId();
       if (!citizenId) {
-        alert('User session expired. Please login again.');
+        toast.error('User session expired. Please login again.');
         return;
       }
       
@@ -160,7 +161,7 @@ export default function ComplaintHistory() {
         citizenId
       );
       
-      alert(`Grievance raised successfully for complaint #${selectedComplaint.complaintId}. You will be notified when it's reviewed.`);
+      toast.success(`Grievance raised successfully for complaint #${selectedComplaint.complaintId}. You will be notified when it's reviewed.`);
       setGrievanceDialog(false);
       setSelectedComplaint(null);
       setGrievanceReason('');
@@ -172,7 +173,7 @@ export default function ComplaintHistory() {
       await loadComplaints();
     } catch (error: any) {
       console.error('Failed to submit grievance:', error);
-      alert(error?.response?.data?.message || 'Failed to submit grievance. Please try again.');
+      toast.error(error?.response?.data?.message || 'Failed to submit grievance. Please try again.');
     } finally {
       setGrievanceSubmitting(false);
     }

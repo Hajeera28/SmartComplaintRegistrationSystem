@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 import { Badge, Save, ArrowBack, Dashboard as DashboardIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getOfficerProfile, updateOfficerProfile, type OfficerProfile } from '../api/profile.api';
-import { tokenstore } from '../auth/tokenstore';
-import AppNavbar from '../components/AppNavbar';
+import { getOfficerProfile, updateOfficerProfile, type OfficerProfile } from '../../api/profile.api';
+import { tokenstore } from '../../auth/tokenstore';
+import AppNavbar from '../../components/AppNavbar';
 
 export default function OfficerProfile() {
   const navigate = useNavigate();

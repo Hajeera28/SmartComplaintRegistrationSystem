@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login } from "../api/auth.api";
-import { tokenstore } from "../auth/tokenstore";
+import { login } from "../../api/auth.api";
+import { tokenstore } from "../../auth/tokenstore";
 import {
   Box,
   Paper,
@@ -18,7 +18,7 @@ import {
   Avatar
 } from "@mui/material";
 import { Security, Speed, Visibility, Support } from "@mui/icons-material";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 
 
 export default function Login() {

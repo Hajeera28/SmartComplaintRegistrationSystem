@@ -31,8 +31,9 @@ import {
   Delete,
   Dashboard as DashboardIcon
 } from "@mui/icons-material";
-import { getAllOfficers, approveOfficer, deleteOfficer, type Officer } from "../api/admin.api";
-import AppNavbar from "../components/AppNavbar";
+import { getAllOfficers, approveOfficer, deleteOfficer, type Officer } from "../../api/admin.api";
+import AppNavbar from "../../components/AppNavbar";
+import { toast } from 'react-toastify';
 
 export default function OfficerApproval() {
   const [officers, setOfficers] = useState<Officer[]>([]);
@@ -66,22 +67,22 @@ export default function OfficerApproval() {
             : officer
         )
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to approve officer:", error);
-      alert("Failed to approve officer");
+      toast.error(error?.response?.data?.message || 'Failed to approve officer. Please try again.');
     }
   };
 
   const handleDelete = async (officerId: string) => {
-    if (!confirm('Are you sure you want to delete this officer?')) return;
+    if (!window.confirm('Are you sure you want to delete this officer?')) return;
     
     try {
       await deleteOfficer(officerId);
       setOfficers(prev => prev.filter(officer => officer.officerId !== officerId));
-      alert('Officer deleted successfully!');
-    } catch (error) {
+      toast.success('Officer deleted successfully!');
+    } catch (error: any) {
       console.error("Failed to delete officer:", error);
-      alert("Failed to delete officer");
+      toast.error(error?.response?.data?.message || 'Failed to delete officer. Please try again.');
     }
   };
 

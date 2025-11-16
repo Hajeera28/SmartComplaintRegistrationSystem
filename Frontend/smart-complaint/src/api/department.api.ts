@@ -30,8 +30,11 @@ export async function getAllCategories(): Promise<Category[]> {
   return data;
 }
 
-export async function addDepartment(departmentName: string): Promise<Department> {
-  const { data } = await http.post<Department>("/Department", { DepartmentName: departmentName });
+export async function addDepartment(departmentName: string, description?: string): Promise<Department> {
+  const { data } = await http.post<Department>("/Department", { 
+    DepartmentName: departmentName,
+    Description: description || ''
+  });
   return data;
 }
 
@@ -42,4 +45,8 @@ export async function addCategory(categoryName: string, departmentId: number): P
 
 export async function deleteCategory(categoryId: number): Promise<void> {
   await http.delete(`/Category/${categoryId}`);
+}
+
+export async function deleteDepartment(departmentId: number): Promise<void> {
+  await http.delete(`/Department/${departmentId}`);
 }
