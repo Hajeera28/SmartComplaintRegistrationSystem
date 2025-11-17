@@ -229,20 +229,33 @@ export default function CitizenDashboard() {
         
         {/* Hero Section */}
         <Box sx={{ 
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", 
+          background: "linear-gradient(135deg, #000080 0%, #1e293b 50%, #3b82f6 100%)", 
           color: "white", 
           py: 8,
           position: "relative",
-          overflow: "hidden"
+          overflow: "hidden",
+          borderTop: '4px solid #ff9933'
         }}>
-          <Container maxWidth="lg">
+          <Box sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+            opacity: 0.3
+          }} />
+          <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
             <Grid container spacing={4} alignItems="center">
               <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="h2" fontWeight={800} mb={3} sx={{ 
+                <Typography variant="h2" fontWeight={800} mb={2} sx={{ 
                   background: "linear-gradient(45deg, #ffffff 30%, #60a5fa 90%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent"
                 }}>
+                  स्मार्ट शिकायत पोर्टल
+                </Typography>
+                <Typography variant="h3" fontWeight={700} mb={3} sx={{ opacity: 0.9 }}>
                   Smart Complaint Portal
                 </Typography>
                 <Typography variant="h5" mb={4} sx={{ opacity: 0.9, lineHeight: 1.6 }}>
@@ -255,14 +268,18 @@ export default function CitizenDashboard() {
                     startIcon={<AddIcon />}
                     onClick={() => setOpenDialog(true)}
                     sx={{ 
-                      bgcolor: "#3b82f6",
+                      background: 'linear-gradient(135deg, #ff9933 0%, #ff6b35 100%)',
                       px: 4,
                       py: 1.5,
                       fontSize: "1.1rem",
                       fontWeight: 600,
                       textTransform: "none",
                       borderRadius: 3,
-                      "&:hover": { bgcolor: "#2563eb" }
+                      border: '2px solid white',
+                      "&:hover": { 
+                        background: 'linear-gradient(135deg, #ff6b35 0%, #ff9933 100%)',
+                        transform: 'translateY(-2px)'
+                      }
                     }}
                   >
                     File Complaint
@@ -314,11 +331,11 @@ export default function CitizenDashboard() {
         <Box id="services-section" sx={{ py: 8, bgcolor: "white" }}>
           <Container maxWidth="lg">
             <Box textAlign="center" mb={6}>
-              <Typography variant="h3" fontWeight={700} mb={2} color="#1e293b">
-                Our Services
+              <Typography variant="h3" fontWeight={700} mb={2} color="#000080">
+                हमारी सेवाएं | Our Services
               </Typography>
               <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: "auto" }}>
-                Explore different departments and their services
+                Explore different departments and their services for citizen welfare
               </Typography>
             </Box>
 
@@ -421,11 +438,11 @@ export default function CitizenDashboard() {
         {/* Quick Actions Section */}
         <Container maxWidth="lg" sx={{ py: 6 }}>
           <Box textAlign="center" mb={6}>
-            <Typography variant="h3" fontWeight={700} mb={2} color="#1e293b">
-              Quick Actions
+            <Typography variant="h3" fontWeight={700} mb={2} color="#000080">
+              त्वरित कार्य | Quick Actions
             </Typography>
             <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: "auto" }}>
-              Manage your complaints and explore our services
+              Manage your complaints and explore our government services
             </Typography>
           </Box>
 

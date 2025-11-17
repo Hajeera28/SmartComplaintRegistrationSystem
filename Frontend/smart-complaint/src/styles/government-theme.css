@@ -1,0 +1,139 @@
+/* Government of India Theme Styles */
+
+/* Indian Flag Colors */
+:root {
+  --saffron: #ff9933;
+  --white: #ffffff;
+  --green: #138808;
+  --navy-blue: #000080;
+  --ashoka-chakra: #000080;
+}
+
+/* Government Emblem Animation */
+@keyframes emblem-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 153, 51, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 153, 51, 0.6);
+  }
+}
+
+.government-emblem {
+  animation: emblem-glow 3s ease-in-out infinite;
+}
+
+/* Tricolor Border Animation */
+@keyframes tricolor-border {
+  0% {
+    border-image: linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%) 1;
+  }
+  50% {
+    border-image: linear-gradient(90deg, #138808 0%, #ffffff 50%, #ff9933 100%) 1;
+  }
+  100% {
+    border-image: linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%) 1;
+  }
+}
+
+.tricolor-border {
+  border: 3px solid;
+  animation: tricolor-border 4s ease-in-out infinite;
+}
+
+/* Ashoka Chakra Rotation */
+@keyframes chakra-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ashoka-chakra {
+  animation: chakra-rotate 20s linear infinite;
+}
+
+/* Government Card Hover Effects */
+.government-card {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(45deg, #ff9933, #138808) border-box;
+}
+
+.government-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Hindi Text Styling */
+.hindi-text {
+  font-family: 'Noto Sans Devanagari', 'Arial Unicode MS', sans-serif;
+  font-weight: 600;
+}
+
+/* Government Button Styles */
+.gov-button-primary {
+  background: linear-gradient(135deg, #000080 0%, #1e40af 100%);
+  border: 2px solid white;
+  color: white;
+  font-weight: 600;
+  text-transform: none;
+  transition: all 0.3s ease;
+}
+
+.gov-button-primary:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #000080 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 128, 0.3);
+}
+
+.gov-button-secondary {
+  background: linear-gradient(135deg, #ff9933 0%, #ff6b35 100%);
+  border: 2px solid white;
+  color: white;
+  font-weight: 600;
+  text-transform: none;
+  transition: all 0.3s ease;
+}
+
+.gov-button-secondary:hover {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff9933 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 153, 51, 0.4);
+}
+
+/* Responsive Design for Government Theme */
+@media (max-width: 768px) {
+  .government-emblem {
+    font-size: 1.5rem;
+  }
+  
+  .hindi-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility Improvements */
+.high-contrast {
+  filter: contrast(1.2);
+}
+
+.focus-visible {
+  outline: 3px solid #ff9933;
+  outline-offset: 2px;
+}
+
+/* Loading Animation with Government Colors */
+@keyframes government-loading {
+  0% { background-color: #ff9933; }
+  33% { background-color: #ffffff; }
+  66% { background-color: #138808; }
+  100% { background-color: #ff9933; }
+}
+
+.government-loading {
+  animation: government-loading 1.5s ease-in-out infinite;
+}

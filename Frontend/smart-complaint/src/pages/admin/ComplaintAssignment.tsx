@@ -135,17 +135,36 @@ export default function ComplaintAssignment() {
       <Box sx={{ bgcolor: "#f1f5f9", minHeight: "100vh", py: 4 }}>
       <Container maxWidth="xl">
         {/* Header Section */}
-        <Paper elevation={0} sx={{ p: 4, mb: 4, background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", color: "white", borderRadius: 4, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}>
-          <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: "rgba(255,255,255,0.2)", width: 64, height: 64 }}>
+        <Paper elevation={0} sx={{ 
+          p: 4, 
+          mb: 4, 
+          background: "linear-gradient(135deg, #000080 0%, #1e293b 50%, #3b82f6 100%)", 
+          color: "white", 
+          borderRadius: 4, 
+          boxShadow: "0 10px 40px rgba(0,0,0,0.1)",
+          borderTop: '4px solid #ff9933',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <Box sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+            opacity: 0.3
+          }} />
+          <Box display="flex" alignItems="center" gap={2} sx={{ position: 'relative', zIndex: 1 }}>
+            <Avatar sx={{ bgcolor: "rgba(255,153,51,0.2)", width: 64, height: 64, border: "2px solid rgba(255,255,255,0.2)" }}>
               <Assignment sx={{ fontSize: 32 }} />
             </Avatar>
             <Box>
               <Typography variant="h4" fontWeight={700} mb={1}>
-                Complaint Assignment
+                शिकायत आवंटन | Complaint Assignment
               </Typography>
               <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                Assign complaints to appropriate officers
+                Assign complaints to appropriate officers for efficient resolution
               </Typography>
             </Box>
           </Box>

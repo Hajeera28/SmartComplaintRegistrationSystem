@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Avatar } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import { tokenstore } from '../auth/tokenstore';
 import NotificationBell from './NotificationBell';
-import { LogoutOutlined, Person } from '@mui/icons-material';
+import { LogoutOutlined, Person, AccountBalance } from '@mui/icons-material';
 
 export default function AppNavbar() {
   const navigate = useNavigate();
@@ -27,36 +27,57 @@ export default function AppNavbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
+    <AppBar position="static" sx={{ 
+      background: 'linear-gradient(90deg, #ff9933 0%, #ffffff 20%, #138808 40%, #000080 60%, #1e293b 100%)',
+      borderBottom: '3px solid #000080'
+    }}>
       <Toolbar>
-        <Button
-          color="inherit"
+        <Typography
           onClick={handleProfileClick}
-          startIcon={
-            <Avatar sx={{ bgcolor: "rgba(255,255,255,0.2)", width: 32, height: 32 }}>
-              <Person sx={{ fontSize: 18 }} />
-            </Avatar>
-          }
           sx={{ 
-            textTransform: 'none',
             fontSize: '1rem',
-            fontWeight: 500,
-            flexGrow: 1,
-            justifyContent: 'flex-start'
+            fontWeight: 700,
+            color: '#ffffff',
+            mr: 2,
+            cursor: 'pointer',
+            textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+            '&:hover': {
+              opacity: 0.8
+            }
           }}
         >
           {getUserName()} ({userRole})
-        </Button>
+        </Typography>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1, justifyContent: 'center' }}>
+          <AccountBalance sx={{ fontSize: 32, color: '#000080' }} />
+          <Box>
+            <Typography variant="h6" fontWeight={700} color="#ffffff" sx={{ lineHeight: 1, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+              भारत सरकार
+            </Typography>
+            <Typography variant="body2" color="#ffffff" fontWeight={600} sx={{ lineHeight: 1, opacity: 0.9, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+              Government of India
+            </Typography>
+          </Box>
+        </Box>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {userRole !== 'Admin' && <NotificationBell />}
           <Button 
-            color="inherit"
+            variant="contained"
             onClick={handleLogout}
             startIcon={<LogoutOutlined />}
-            sx={{ textTransform: 'none' }}
+            sx={{ 
+              textTransform: 'none',
+              background: 'linear-gradient(135deg, #000080 0%, #1e40af 100%)',
+              border: '2px solid white',
+              fontWeight: 600,
+              '&:hover': {
+                background: 'linear-gradient(135deg, #1e40af 0%, #000080 100%)'
+              }
+            }}
           >
-            Logout
+            लॉगआउट | Logout
           </Button>
         </Box>
       </Toolbar>

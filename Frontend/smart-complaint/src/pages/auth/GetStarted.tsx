@@ -26,7 +26,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowBack,
-  CloudUpload
+  CloudUpload,
+  AccountBalance
 } from "@mui/icons-material";
 import Footer from "../../components/Footer";
 
@@ -270,7 +271,13 @@ export default function GetStarted() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     
-    const isCitizen = registerData.userType === "citizen";
+    const isCitizen = authCards[currentCard].type === "register-citizen";
+    
+    // Set userType based on current card
+    setRegisterData(prev => ({ 
+      ...prev, 
+      userType: isCitizen ? "citizen" : "officer" 
+    }));
     const errors = {
       name: validateName(registerData.name, !isCitizen),
       email: validateEmail(registerData.email),
@@ -396,28 +403,12 @@ export default function GetStarted() {
     </form>
   );
 
-  const renderRegisterForm = () => {
-    const isCitizen = registerData.userType === "citizen";
+  const renderRegisterForm = (cardType: string) => {
+    const isCitizen = cardType === "register-citizen";
     
     return (
       <form onSubmit={handleRegister}>
         <Stack spacing={2.5}>
-          <Box display="flex" gap={1} mb={2}>
-            <Button
-              variant={isCitizen ? "contained" : "outlined"}
-              onClick={() => setRegisterData({ ...registerData, userType: "citizen" })}
-              sx={{ flex: 1, textTransform: 'none' }}
-            >
-              Citizen
-            </Button>
-            <Button
-              variant={!isCitizen ? "contained" : "outlined"}
-              onClick={() => setRegisterData({ ...registerData, userType: "officer" })}
-              sx={{ flex: 1, textTransform: 'none' }}
-            >
-              Officer
-            </Button>
-          </Box>
 
           <TextField
             label="Full Name"
@@ -426,7 +417,7 @@ export default function GetStarted() {
             error={!!registerErrors.name}
             helperText={registerErrors.name}
             fullWidth
-            sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+            sx={getFieldSx(isCitizen ? '#10b981' : '#f59e0b')}
           />
           
           <TextField
@@ -437,7 +428,7 @@ export default function GetStarted() {
             error={!!registerErrors.email}
             helperText={registerErrors.email}
             fullWidth
-            sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+            sx={getFieldSx(isCitizen ? '#10b981' : '#f59e0b')}
           />
           
           <Box display="flex" gap={2}>
@@ -449,7 +440,7 @@ export default function GetStarted() {
               error={!!registerErrors.password}
               helperText={registerErrors.password}
               fullWidth
-              sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+              sx={getFieldSx(isCitizen ? '#10b981' : '#f59e0b')}
             />
             <TextField
               label="Confirm Password"
@@ -459,7 +450,7 @@ export default function GetStarted() {
               error={!!registerErrors.confirmPassword}
               helperText={registerErrors.confirmPassword}
               fullWidth
-              sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+              sx={getFieldSx(isCitizen ? '#10b981' : '#f59e0b')}
             />
           </Box>
 
@@ -609,27 +600,51 @@ export default function GetStarted() {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", display: 'flex', flexDirection: 'column', backgroundColor: "#f1f5f9" }}>
+    <Box sx={{ 
+      minHeight: "100vh", 
+      display: 'flex', 
+      flexDirection: 'column',
+      backgroundImage: 'url("https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed'
+    }}>
       {/* Navbar */}
       <Box sx={{ 
-        bgcolor: 'white', 
-        borderBottom: '1px solid #e2e8f0',
+        background: 'linear-gradient(90deg, #ff9933 0%, #ffffff 50%, #138808 100%)', 
+        borderBottom: '3px solid #000080',
         py: 2,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
       }}>
         <Container maxWidth="lg">
           <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="h6" fontWeight={700} color="#1e293b">
-              Smart Complaint Portal
-            </Typography>
+            <Box display="flex" alignItems="center" gap={2}>
+              <AccountBalance sx={{ fontSize: 40, color: '#000080' }} />
+              <Box>
+                <Typography variant="h6" fontWeight={700} color="#000080">
+                  भारत सरकार | Government of India
+                </Typography>
+                <Typography variant="body2" color="#1e293b" fontWeight={600}>
+                  Smart Complaint Portal
+                </Typography>
+              </Box>
+            </Box>
             <Button
               component={Link}
               to="/"
-              variant="text"
+              variant="contained"
               startIcon={<ArrowBack />}
-              sx={{ textTransform: 'none' }}
+              sx={{ 
+                textTransform: 'none',
+                background: 'linear-gradient(135deg, #000080 0%, #1e40af 100%)',
+                fontWeight: 600,
+                border: '2px solid white',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #1e40af 0%, #000080 100%)'
+                }
+              }}
             >
-              Back to Home
+              वापस | Back to Home
             </Button>
           </Box>
         </Container>
@@ -637,12 +652,21 @@ export default function GetStarted() {
 
       {/* Hero Section */}
       <Box sx={{ 
-        background: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #3b82f6 100%)", 
+        background: "linear-gradient(135deg, #000080 0%, #1e293b 50%, #3b82f6 100%)", 
         color: "white", 
         py: 6,
         position: 'relative',
         overflow: 'hidden'
       }}>
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          opacity: 0.3
+        }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Box textAlign="center">
             <Typography variant="h2" fontWeight={800} mb={2} sx={{ 
@@ -651,10 +675,13 @@ export default function GetStarted() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
-              Get Started
+              आरंभ करें | Get Started
             </Typography>
             <Typography variant="h5" sx={{ opacity: 0.9, mb: 2, fontWeight: 400 }}>
               Choose how you want to access the Smart Complaint Portal
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.8 }}>
+              अपने लिए उपयुक्त विकल्प चुनें | Select the appropriate option for you
             </Typography>
           </Box>
         </Container>
@@ -662,14 +689,16 @@ export default function GetStarted() {
 
       {/* Auth Cards Carousel */}
       <Container maxWidth="lg" sx={{ py: 6 }}>
-        <Box sx={{ position: "relative", overflow: "hidden", mb: 4 }}>
-          <Box sx={{ 
-            display: "flex", 
-            transform: `translateX(-${currentCard * 100}%)`,
-            transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-          }}>
-            {authCards.map((card, index) => (
-              <Box key={index} sx={{ minWidth: "100%", display: "flex", justifyContent: "center", px: 2 }}>
+        <Box display="flex" justifyContent="center" mb={4}>
+          {authCards.map((card, index) => (
+            <Box 
+              key={index} 
+              sx={{ 
+                display: index === currentCard ? 'flex' : 'none',
+                justifyContent: 'center',
+                width: '100%'
+              }}
+            >
                 <Paper 
                   elevation={0} 
                   sx={{ 
@@ -740,11 +769,10 @@ export default function GetStarted() {
                   )}
 
                   {card.type === "login" && renderLoginForm()}
-                  {(card.type === "register-citizen" || card.type === "register-officer") && renderRegisterForm()}
+                  {(card.type === "register-citizen" || card.type === "register-officer") && renderRegisterForm(card.type)}
                 </Paper>
-              </Box>
-            ))}
-          </Box>
+            </Box>
+          ))}
         </Box>
 
         {/* Navigation Controls */}
@@ -796,7 +824,7 @@ export default function GetStarted() {
         </Box>
 
         <Box textAlign="center" mt={4}>
-          <Typography variant="body1" color="#64748b">
+          <Typography variant="body1" color="white">
             {currentCard === 0 ? "Don't have an account? " : "Already have an account? "}
             <Button
               variant="text"
