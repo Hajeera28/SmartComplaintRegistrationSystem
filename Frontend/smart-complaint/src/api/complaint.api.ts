@@ -2,8 +2,6 @@ import { http } from "./http";
 import type { Complaint, CreateComplaintRequest } from "../types/Complaint";
 
 export async function createComplaint(req: CreateComplaintRequest): Promise<Complaint> {
-  console.log('Creating complaint with data:', req);
-  
   const formData = new FormData();
   formData.append("Title", req.title);
   formData.append("Description", req.description);
@@ -15,30 +13,24 @@ export async function createComplaint(req: CreateComplaintRequest): Promise<Comp
     formData.append("Image", req.image);
   }
 
-  console.log('FormData contents:');
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-
   const { data } = await http.post<Complaint>("/Complaint", formData, {
     headers: {
       'Content-Type': undefined // Let browser set it automatically
     }
   });
   
-  console.log('Complaint created successfully:', data);
   return data;
 }
 
 export async function getComplaintsByCitizen(citizenId: string): Promise<Complaint[]> {
-  console.log('Fetching complaints for citizen:', citizenId);
-  const { data } = await http.get<Complaint[]>(`/Complaint/citizen/${citizenId}`);
-  console.log('Complaints fetched:', data);
+  const payload = { citizenId };
+  const { data } = await http.post<Complaint[]>('/Complaint/citizen', payload);
   return data;
 }
 
 export async function getComplaintsByOfficer(officerId: string): Promise<Complaint[]> {
-  const { data } = await http.get<Complaint[]>(`/Complaint/officer/${officerId}`);
+  const payload = { officerId };
+  const { data } = await http.post<Complaint[]>('/Complaint/officer', payload);
   return data;
 }
 
@@ -48,7 +40,8 @@ export async function getAllComplaints(): Promise<Complaint[]> {
 }
 
 export async function getComplaintById(complaintId: number): Promise<Complaint> {
-  const { data } = await http.get<Complaint>(`/Complaint/${complaintId}`);
+  const payload = { complaintId };
+  const { data } = await http.post<Complaint>('/Complaint/details', payload);
   return data;
 }
 
@@ -78,7 +71,7 @@ export async function updateComplaintStatus(
     formData.append("OfficerImage", officerImage);
   }
 
-  const { data } = await http.put<Complaint>(`/Complaint/${complaintId}/status`, formData, {
+  const { data } = await http.put<Complaint>('/Complaint/status', formData, {
     headers: {
       'Content-Type': undefined
     }

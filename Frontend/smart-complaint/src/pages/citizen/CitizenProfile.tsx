@@ -42,9 +42,7 @@ export default function CitizenProfile() {
       if (!citizenId) return;
       
       const data = await getCitizenProfile(citizenId);
-      console.log('Loaded citizen profile:', data);
-      console.log('All data keys:', Object.keys(data));
-      console.log('State field value:', data.state);
+
       
       // Map the response data, checking for different possible field names
       setProfile({
@@ -53,7 +51,7 @@ export default function CitizenProfile() {
         email: data.email || data.Email || '',
         phone: data.phone || data.Phone || '',
         address: data.address || data.Address || '',
-        state: data.state || data.State || data.stateName || data.StateName || ''
+        state: "Tamil Nadu"
       });
     } catch (error) {
       console.error('Failed to load profile:', error);
@@ -91,7 +89,7 @@ export default function CitizenProfile() {
         address: profile.address.trim()
       };
       
-      console.log('Updating citizen profile:', updateData);
+
       await updateCitizenProfile(citizenId, updateData);
       toast.success('Profile updated successfully!');
     } catch (error: any) {
@@ -166,6 +164,14 @@ export default function CitizenProfile() {
               />
             </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="State"
+                value="Tamil Nadu"
+                disabled
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth

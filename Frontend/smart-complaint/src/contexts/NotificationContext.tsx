@@ -17,9 +17,26 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   const loadNotifications = async () => {
     try {
+      const token = tokenstore.get();
       const userId = tokenstore.getUserId();
       const userRole = tokenstore.getRole();
-      if (!userId) return;
+      
+
+      
+      // Don't make API calls if user is not authenticated
+      if (!token || !userId || !userRole) {
+
+        setNotifications([]);
+        return;
+      }
+      
+      // Validate token format (basic check)
+      if (!token.includes('.') || token.split('.').length !== 3) {
+
+        tokenstore.clear();
+        setNotifications([]);
+        return;
+      }
       
       let data: Notification[] = [];
       if (userRole === 'Officer' || userRole === 'Admin') {
@@ -30,8 +47,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       // Filter unread notifications on frontend
       const unreadData = data.filter(n => !n.isRead);
       setNotifications(unreadData);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load notifications:', error);
+      // If it's a 401 error, clear the invalid token
+      if (error.response?.status === 401) {
+
+        tokenstore.clear();
+      }
+      setNotifications([]);
     }
   };
 

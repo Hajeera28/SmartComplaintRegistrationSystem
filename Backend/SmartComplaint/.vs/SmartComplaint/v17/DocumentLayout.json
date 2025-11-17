@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|c:\\kanini\\react\\reactprojectfolders\\backend\\smartcomplaint\\smartcomplaint\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|solutionrelative:smartcomplaint\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|c:\\kanini\\react\\reactprojectfolders\\backend\\smartcomplaint\\smartcomplaint\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|solutionrelative:smartcomplaint\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|c:\\kanini\\react\\reactprojectfolders\\backend\\smartcomplaint\\smartcomplaint\\models\\citizen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|solutionrelative:smartcomplaint\\models\\citizen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|c:\\kanini\\react\\reactprojectfolders\\backend\\smartcomplaint\\smartcomplaint\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|solutionrelative:smartcomplaint\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{18ACEB00-B192-469B-816E-A30FA180C811}|SmartComplaint\\SmartComplaint.csproj|c:\\kanini\\react\\reactprojectfolders\\backend\\smartcomplaint\\smartcomplaint\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -125,7 +125,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -149,28 +149,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DepartmentController.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Controllers\\DepartmentController.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Controllers\\DepartmentController.cs",
               "ToolTip": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Controllers\\DepartmentController.cs",
               "RelativeToolTip": "SmartComplaint\\Controllers\\DepartmentController.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAwwBEAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T09:53:09.075Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "CitizenController.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Controllers\\CitizenController.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Controllers\\CitizenController.cs",
               "ToolTip": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Controllers\\CitizenController.cs",
               "RelativeToolTip": "SmartComplaint\\Controllers\\CitizenController.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwEsAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAADYAAAAAAAAAAAAwwFcAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-07T09:35:35.532Z"
+              "WhenOpened": "2025-11-07T09:35:35.532Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -186,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "UserRole.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Models\\Enums\\UserRole.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Models\\Enums\\UserRole.cs",
@@ -198,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "OfficerRole.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Models\\Enums\\OfficerRole.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Models\\Enums\\OfficerRole.cs",
@@ -210,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "TokenController.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Controllers\\TokenController.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Controllers\\TokenController.cs",
@@ -218,12 +219,11 @@
               "RelativeToolTip": "SmartComplaint\\Controllers\\TokenController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-06T11:47:30.2Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-06T11:47:30.2Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "20251111110739_idupdate.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Migrations\\20251111110739_idupdate.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Migrations\\20251111110739_idupdate.cs",
@@ -235,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Citizen.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Models\\Citizen.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Models\\Citizen.cs",
@@ -247,7 +247,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "TokenService.cs",
               "DocumentMoniker": "C:\\KANINI\\React\\ReactProjectFolders\\Backend\\SmartComplaint\\SmartComplaint\\Services\\TokenService.cs",
               "RelativeDocumentMoniker": "SmartComplaint\\Services\\TokenService.cs",

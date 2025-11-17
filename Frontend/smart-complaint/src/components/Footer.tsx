@@ -30,11 +30,8 @@ export default function Footer() {
               Quick Links
             </Typography>
             <Box display="flex" flexDirection="column" gap={1}>
-              <Link href="/login" color="inherit" sx={{ opacity: 0.8, textDecoration: 'none', '&:hover': { opacity: 1 } }}>
-                Login
-              </Link>
-              <Link href="/register" color="inherit" sx={{ opacity: 0.8, textDecoration: 'none', '&:hover': { opacity: 1 } }}>
-                Register
+              <Link href="/get-started" color="inherit" sx={{ opacity: 0.8, textDecoration: 'none', '&:hover': { opacity: 1 } }}>
+                Get Started
               </Link>
               <Link href="#" color="inherit" sx={{ opacity: 0.8, textDecoration: 'none', '&:hover': { opacity: 1 } }}>
                 Help & Support

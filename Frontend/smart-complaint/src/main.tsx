@@ -1,12 +1,13 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import "./styles/common.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from "./auth/ProtectedRoute";
 import LandingPage from "./pages/auth/LandingPage";
 import GetStarted from "./pages/auth/GetStarted";
-import Login from "./pages/auth/Login";
+
 
 import CitizenDashboard from "./pages/citizen/CitizenDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -22,7 +23,6 @@ import { NotificationProvider } from "./contexts/NotificationContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
-  { path: "/login", element: <LandingPage /> },
   { path: "/get-started", element: <GetStarted /> },
 
   {

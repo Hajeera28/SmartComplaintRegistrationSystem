@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartComplaint.DTOs;
 using SmartComplaint.Services;
+using SmartComplaint.Models;
 
 namespace SmartComplaint.Controllers
 {
@@ -48,6 +49,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid citizen ID");
 
             var citizen = await _service.GetCitizenByIdAsync(id);
+            return citizen == null ? NotFound() : Ok(citizen);
+        }
+
+        [HttpPost("profile")]
+        [Authorize(Roles = "Admin,Citizen")]  
+        public async Task<ActionResult<CitizenDto.CitizenReadDto>> GetCitizenProfile([FromBody] CitizenIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.CitizenId))
+                return BadRequest("Invalid citizen ID");
+
+            var citizen = await _service.GetCitizenByIdAsync(request.CitizenId);
             return citizen == null ? NotFound() : Ok(citizen);
         }
 
@@ -99,6 +111,36 @@ namespace SmartComplaint.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to update citizen: {CitizenId}", id);
+                return BadRequest("Failed to update citizen profile");
+            }
+        }
+
+        [HttpPut("update")]
+        [Authorize(Roles = "Citizen")]  
+        public async Task<ActionResult<CitizenDto.CitizenReadDto>> UpdateCitizenProfile([FromBody] CitizenDto.CitizenUpdateDto dto)
+        {
+            _logger.LogInformation("Updating citizen profile with ID: {CitizenId}", dto.CitizenId);
+            
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid model state for citizen profile update: {CitizenId}", dto.CitizenId);
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var updated = await _service.UpdateCitizenAsync(dto);
+                if (updated == null)
+                {
+                    _logger.LogWarning("Citizen not found for profile update: {CitizenId}", dto.CitizenId);
+                    return NotFound();
+                }
+                _logger.LogInformation("Citizen profile updated successfully: {CitizenId}", dto.CitizenId);
+                return Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update citizen profile: {CitizenId}", dto.CitizenId);
                 return BadRequest("Failed to update citizen profile");
             }
         }

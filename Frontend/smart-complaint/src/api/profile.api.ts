@@ -19,21 +19,25 @@ export interface OfficerProfile {
 }
 
 export async function getCitizenProfile(citizenId: string): Promise<CitizenProfile> {
-  const { data } = await http.get<CitizenProfile>(`/Citizen/${citizenId}`);
+  const payload = { citizenId };
+  const { data } = await http.post<CitizenProfile>('/Citizen/profile', payload);
   return data;
 }
 
 export async function updateCitizenProfile(citizenId: string, profile: Partial<CitizenProfile>): Promise<CitizenProfile> {
-  const { data } = await http.put<CitizenProfile>(`/Citizen/${citizenId}`, profile);
+  const payload = { citizenId, ...profile };
+  const { data } = await http.put<CitizenProfile>('/Citizen/update', payload);
   return data;
 }
 
 export async function getOfficerProfile(officerId: string): Promise<OfficerProfile> {
-  const { data } = await http.get<OfficerProfile>(`/Officer/${officerId}`);
+  const payload = { officerId };
+  const { data } = await http.post<OfficerProfile>('/Officer/profile', payload);
   return data;
 }
 
 export async function updateOfficerProfile(officerId: string, profile: Partial<OfficerProfile>): Promise<OfficerProfile> {
-  const { data } = await http.put<OfficerProfile>(`/Officer/${officerId}`, profile);
+  const payload = { officerId, ...profile };
+  const { data } = await http.put<OfficerProfile>('/Officer/update', payload);
   return data;
 }

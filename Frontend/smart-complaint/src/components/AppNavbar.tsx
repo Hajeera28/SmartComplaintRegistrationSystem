@@ -11,7 +11,7 @@ export default function AppNavbar() {
   
   const handleLogout = () => {
     tokenstore.clear();
-    navigate('/login');
+    navigate('/get-started');
   };
 
   const handleProfileClick = () => {
@@ -49,7 +49,7 @@ export default function AppNavbar() {
         </Button>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <NotificationBell />
+          {userRole !== 'Admin' && <NotificationBell />}
           <Button 
             color="inherit"
             onClick={handleLogout}

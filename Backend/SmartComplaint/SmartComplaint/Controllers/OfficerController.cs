@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartComplaint.DTOs;
 using SmartComplaint.Models.Enums;
 using SmartComplaint.Services;
+using SmartComplaint.Models;
 
 namespace SmartComplaint.Controllers
 {
@@ -70,6 +71,17 @@ namespace SmartComplaint.Controllers
             return officer == null ? NotFound() : Ok(officer);
         }
 
+        [HttpPost("profile")]
+        [Authorize(Roles = "Admin,Officer")]  
+        public async Task<ActionResult<OfficerDto.OfficerReadDto>> GetOfficerProfile([FromBody] OfficerIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.OfficerId))
+                return BadRequest("Invalid officer ID");
+
+            var officer = await _service.GetOfficerByIdAsync(request.OfficerId);
+            return officer == null ? NotFound() : Ok(officer);
+        }
+
         [HttpGet("user/{userId}")]
         [Authorize(Roles = "Admin,Officer")]  
         public async Task<ActionResult<OfficerDto.OfficerReadDto>> GetOfficerByUserId(int userId)
@@ -78,6 +90,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid user ID");
 
             var officer = await _service.GetOfficerByUserIdAsync(userId);
+            return officer == null ? NotFound() : Ok(officer);
+        }
+
+        [HttpPost("user")]
+        [Authorize(Roles = "Admin,Officer")]  
+        public async Task<ActionResult<OfficerDto.OfficerReadDto>> GetOfficerByUserIdPayload([FromBody] UserIdRequest request)
+        {
+            if (request.UserId <= 0)
+                return BadRequest("Invalid user ID");
+
+            var officer = await _service.GetOfficerByUserIdAsync(request.UserId);
             return officer == null ? NotFound() : Ok(officer);
         }
 
@@ -126,6 +149,33 @@ namespace SmartComplaint.Controllers
             }
         }
 
+        [HttpPut("approve")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> ApproveOfficerPayload([FromBody] OfficerIdRequest request)
+        {
+            _logger.LogInformation("Approving officer with ID: {OfficerId}", request.OfficerId);
+            
+            if (string.IsNullOrEmpty(request.OfficerId))
+                return BadRequest("Invalid officer ID");
+
+            try
+            {
+                var approved = await _service.ApproveOfficerAsync(request.OfficerId);
+                if (approved)
+                {
+                    _logger.LogInformation("Officer approved successfully: {OfficerId}", request.OfficerId);
+                    return Ok("Officer approved successfully");
+                }
+                _logger.LogWarning("Officer not found for approval: {OfficerId}", request.OfficerId);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to approve officer: {OfficerId}", request.OfficerId);
+                return BadRequest("Failed to approve officer");
+            }
+        }
+
         [HttpDelete("{id}/deny")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DenyOfficer(string id)
@@ -134,6 +184,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid officer ID");
 
             var denied = await _service.DenyOfficerAsync(id);
+            return denied ? Ok("Officer registration denied") : NotFound();
+        }
+
+        [HttpDelete("deny")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DenyOfficerPayload([FromBody] OfficerIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.OfficerId))
+                return BadRequest("Invalid officer ID");
+
+            var denied = await _service.DenyOfficerAsync(request.OfficerId);
             return denied ? Ok("Officer registration denied") : NotFound();
         }
 
@@ -174,6 +235,20 @@ namespace SmartComplaint.Controllers
             return updated == null ? NotFound() : Ok(updated);
         }
 
+        [HttpPut("update")]
+        [Authorize(Roles = "Officer")]  
+        public async Task<ActionResult<OfficerDto.OfficerReadDto>> UpdateOfficerProfile([FromBody] OfficerDto.OfficerUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!Enum.IsDefined(typeof(OfficerRole), dto.Role))
+                return BadRequest("Invalid officer role");
+
+            var updated = await _service.UpdateOfficerAsync(dto);
+            return updated == null ? NotFound() : Ok(updated);
+        }
+
         [HttpDelete("{id}")]
          [Authorize(Roles = "Admin,Officer")]  
         public async Task<ActionResult> DeleteOfficer(string id, [FromQuery] string deletedBy = "System")
@@ -182,6 +257,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid officer ID");
 
             var deleted = await _service.DeleteOfficerAsync(id, deletedBy);
+            return deleted ? NoContent() : NotFound();
+        }
+
+        [HttpDelete("delete")]
+        [Authorize(Roles = "Admin,Officer")]  
+        public async Task<ActionResult> DeleteOfficerPayload([FromBody] OfficerIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.OfficerId))
+                return BadRequest("Invalid officer ID");
+
+            var deleted = await _service.DeleteOfficerAsync(request.OfficerId, "System");
             return deleted ? NoContent() : NotFound();
         }
     }

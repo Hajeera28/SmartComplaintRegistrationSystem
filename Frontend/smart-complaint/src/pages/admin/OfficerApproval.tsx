@@ -47,8 +47,7 @@ export default function OfficerApproval() {
     try {
       setLoading(true);
       const data = await getAllOfficers();
-      console.log('Officers data received:', data);
-      console.log('Sample officer:', data[0]);
+
       setOfficers(data);
     } catch (error) {
       console.error("Failed to load officers:", error);

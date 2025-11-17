@@ -8,7 +8,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Button,
   TextField,
   Stack,
@@ -68,13 +67,13 @@ export default function GetStarted() {
     confirmPassword: "",
     phone: "",
     address: "",
-    state: "",
+    state: "Tamil Nadu",
     departmentId: 1,
     role: 1,
     userType: "citizen"
   });
   const [proofFile, setProofFile] = useState<File | null>(null);
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [registerErrors, setRegisterErrors] = useState({
     name: "",
     email: "",
@@ -175,6 +174,7 @@ export default function GetStarted() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     
+    //validation msgs under fields
     const emailError = validateEmail(loginData.email);
     const passwordError = validatePassword(loginData.password);
     
@@ -201,7 +201,7 @@ export default function GetStarted() {
       }
     } catch (err: any) {
       toast.error("Invalid email or password. Please try again.");
-      setApiError("Invalid email or password. Please try again.");
+     // setApiError("Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -244,7 +244,7 @@ export default function GetStarted() {
         error = !stringValue.trim() ? "Address is required" : "";
         break;
       case "state":
-        error = !stringValue.trim() ? "State is required" : "";
+        
         break;
     }
     
@@ -278,7 +278,7 @@ export default function GetStarted() {
       confirmPassword: registerData.password !== registerData.confirmPassword ? "Passwords do not match" : "",
       phone: isCitizen ? validatePhone(registerData.phone) : "",
       address: isCitizen ? (!registerData.address.trim() ? "Address is required" : "") : "",
-      state: !registerData.state.trim() ? "State is required" : "",
+      state: "", // State is static, no validation needed
       proofDocument: !isCitizen && !proofFile ? "Proof document is required" : ""
     };
     
@@ -297,7 +297,7 @@ export default function GetStarted() {
           password: registerData.password,
           phone: registerData.phone,
           address: registerData.address.trim(),
-          state: registerData.state.trim(),
+          state: "Tamil Nadu",
         });
       } else {
         if (!proofFile) {
@@ -308,7 +308,7 @@ export default function GetStarted() {
           name: registerData.name.trim(),
           email: registerData.email.toLowerCase().trim(),
           password: registerData.password,
-          state: registerData.state.trim(),
+          state: "Tamil Nadu",
           departmentId: registerData.departmentId,
           role: registerData.role,
           proofDocument: proofFile,
@@ -322,7 +322,7 @@ export default function GetStarted() {
       }
       setCurrentCard(0);
     } catch (err: any) {
-      console.error('Registration error:', err.response?.data);
+
       let errorMessage = "Registration failed. Please try again.";
       
       if (err.response?.data) {
@@ -440,59 +440,49 @@ export default function GetStarted() {
             sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
           />
           
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Password"
-                type="password"
-                value={registerData.password}
-                onChange={(e) => handleRegisterChange("password", e.target.value)}
-                error={!!registerErrors.password}
-                helperText={registerErrors.password}
-                fullWidth
-                sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Confirm Password"
-                type="password"
-                value={registerData.confirmPassword}
-                onChange={(e) => handleRegisterChange("confirmPassword", e.target.value)}
-                error={!!registerErrors.confirmPassword}
-                helperText={registerErrors.confirmPassword}
-                fullWidth
-                sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
-              />
-            </Grid>
-          </Grid>
+          <Box display="flex" gap={2}>
+            <TextField
+              label="Password"
+              type="password"
+              value={registerData.password}
+              onChange={(e) => handleRegisterChange("password", e.target.value)}
+              error={!!registerErrors.password}
+              helperText={registerErrors.password}
+              fullWidth
+              sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+            />
+            <TextField
+              label="Confirm Password"
+              type="password"
+              value={registerData.confirmPassword}
+              onChange={(e) => handleRegisterChange("confirmPassword", e.target.value)}
+              error={!!registerErrors.confirmPassword}
+              helperText={registerErrors.confirmPassword}
+              fullWidth
+              sx={getFieldSx(registerData.userType === "citizen" ? '#10b981' : '#f59e0b')}
+            />
+          </Box>
 
           {isCitizen && (
             <>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Phone Number"
-                    value={registerData.phone}
-                    onChange={(e) => handleRegisterChange("phone", e.target.value)}
-                    error={!!registerErrors.phone}
-                    helperText={registerErrors.phone}
-                    fullWidth
-                    sx={getFieldSx('#10b981')}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="State"
-                    value={registerData.state}
-                    onChange={(e) => handleRegisterChange("state", e.target.value)}
-                    error={!!registerErrors.state}
-                    helperText={registerErrors.state}
-                    fullWidth
-                    sx={getFieldSx('#10b981')}
-                  />
-                </Grid>
-              </Grid>
+              <Box display="flex" gap={2}>
+                <TextField
+                  label="Phone Number"
+                  value={registerData.phone}
+                  onChange={(e) => handleRegisterChange("phone", e.target.value)}
+                  error={!!registerErrors.phone}
+                  helperText={registerErrors.phone}
+                  fullWidth
+                  sx={getFieldSx('#10b981')}
+                />
+                <TextField
+                  label="State"
+                  value="Tamil Nadu"
+                  disabled
+                  fullWidth
+                  sx={getFieldSx('#10b981')}
+                />
+              </Box>
               
               <TextField
                 label="Address"
@@ -512,48 +502,42 @@ export default function GetStarted() {
             <>
               <TextField
                 label="State"
-                value={registerData.state}
-                onChange={(e) => handleRegisterChange("state", e.target.value)}
-                error={!!registerErrors.state}
-                helperText={registerErrors.state}
+                value="Tamil Nadu"
+                disabled
                 fullWidth
                 sx={getFieldSx('#f59e0b')}
               />
               
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    select
-                    label="Department"
-                    value={registerData.departmentId}
-                    onChange={(e) => handleRegisterChange("departmentId", Number(e.target.value))}
-                    fullWidth
-                    sx={getFieldSx('#f59e0b')}
-                  >
-                    {departments.map((dept: any) => (
-                      <MenuItem key={dept.departmentId} value={dept.departmentId}>
-                        {dept.departmentName}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    select
-                    label="Officer Role"
-                    value={registerData.role}
-                    onChange={(e) => handleRegisterChange("role", Number(e.target.value))}
-                    fullWidth
-                    sx={getFieldSx('#f59e0b')}
-                  >
-                    <MenuItem value={1}>Field Officer</MenuItem>
-                    <MenuItem value={2}>Senior Officer</MenuItem>
-                    <MenuItem value={3}>Department Head</MenuItem>
-                    <MenuItem value={4}>Regional Head</MenuItem>
-                    <MenuItem value={5}>Commissioner</MenuItem>
-                  </TextField>
-                </Grid>
-              </Grid>
+              <Box display="flex" gap={2}>
+                <TextField
+                  select
+                  label="Department"
+                  value={registerData.departmentId}
+                  onChange={(e) => handleRegisterChange("departmentId", Number(e.target.value))}
+                  fullWidth
+                  sx={getFieldSx('#f59e0b')}
+                >
+                  {departments.map((dept: any) => (
+                    <MenuItem key={dept.departmentId} value={dept.departmentId}>
+                      {dept.departmentName}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  select
+                  label="Officer Role"
+                  value={registerData.role}
+                  onChange={(e) => handleRegisterChange("role", Number(e.target.value))}
+                  fullWidth
+                  sx={getFieldSx('#f59e0b')}
+                >
+                  <MenuItem value={1}>Field Officer</MenuItem>
+                  <MenuItem value={2}>Senior Officer</MenuItem>
+                  <MenuItem value={3}>Department Head</MenuItem>
+                  <MenuItem value={4}>Regional Head</MenuItem>
+                  <MenuItem value={5}>Commissioner</MenuItem>
+                </TextField>
+              </Box>
               
               <Box>
                 <Typography variant="subtitle2" mb={1} color="#374151">

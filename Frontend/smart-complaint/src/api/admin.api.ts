@@ -31,15 +31,18 @@ export async function getAllCitizens(): Promise<CitizenInfo[]> {
 }
 
 export async function approveOfficer(officerId: string): Promise<void> {
-  await http.put(`/Officer/${officerId}/approve`);
+  const payload = { officerId };
+  await http.put('/Officer/approve', payload);
 }
 
 export async function denyOfficer(officerId: string): Promise<void> {
-  await http.delete(`/Officer/${officerId}/deny`);
+  const payload = { officerId };
+  await http.delete('/Officer/deny', { data: payload });
 }
 
 export async function getOfficerByUserId(userId: number): Promise<Officer> {
-  const { data } = await http.get<Officer>(`/Officer/user/${userId}`);
+  const payload = { userId };
+  const { data } = await http.post<Officer>('/Officer/user', payload);
   return data;
 }
 
@@ -51,5 +54,6 @@ export async function assignComplaint(complaintId: number, officerId: string): P
 }
 
 export async function deleteOfficer(officerId: string): Promise<void> {
-  await http.delete(`/Officer/${officerId}`);
+  const payload = { officerId };
+  await http.delete('/Officer/delete', { data: payload });
 }

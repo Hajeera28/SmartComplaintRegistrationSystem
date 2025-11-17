@@ -23,12 +23,14 @@ export async function getAllGrievances(): Promise<Grievance[]> {
 }
 
 export async function getGrievancesByOfficer(officerId: string): Promise<Grievance[]> {
-  const { data } = await http.get<Grievance[]>(`/Grievance/officer/${officerId}`);
+  const payload = { officerId };
+  const { data } = await http.post<Grievance[]>('/Grievance/officer', payload);
   return data;
 }
 
 export async function getGrievancesByCitizen(citizenId: string): Promise<Grievance[]> {
-  const { data } = await http.get<Grievance[]>(`/Grievance/citizen/${citizenId}`);
+  const payload = { citizenId };
+  const { data } = await http.post<Grievance[]>('/Grievance/citizen', payload);
   return data;
 }
 
@@ -52,7 +54,8 @@ export async function createGrievance(
 
 
 export async function checkGrievanceExists(complaintId: number): Promise<boolean> {
-  const { data } = await http.get<boolean>(`/Grievance/exists/${complaintId}`);
+  const payload = { complaintId };
+  const { data } = await http.post<boolean>('/Grievance/exists', payload);
   return data;
 }
 
@@ -66,7 +69,7 @@ export async function updateGrievanceStatus(
   formData.append("StatusId", statusId.toString());
   formData.append("OfficerRemarks", remarks || "");
   
-  await http.put(`/Grievance/${grievanceId}/status`, formData, {
+  await http.put('/Grievance/status', formData, {
     headers: {
       'Content-Type': undefined
     }

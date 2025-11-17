@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartComplaint.DTOs;
 using SmartComplaint.Services;
+using SmartComplaint.Models;
 
 namespace SmartComplaint.Controllers
 {
@@ -56,6 +57,17 @@ namespace SmartComplaint.Controllers
             return Ok(notifications);
         }
 
+        [HttpPost("officer")]
+        [Authorize(Roles = "Admin,Officer")]  
+        public async Task<ActionResult<IEnumerable<NotificationDto.NotificationReadDto>>> GetNotificationsByOfficerPayload([FromBody] OfficerIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.OfficerId))
+                return BadRequest("Invalid officer ID");
+
+            var notifications = await _service.GetNotificationsByOfficerAsync(request.OfficerId);
+            return Ok(notifications);
+        }
+
         [HttpGet("officer/{officerId}/unread")]
         [Authorize(Roles = "Admin,Officer")]  
         public async Task<ActionResult<IEnumerable<NotificationDto.NotificationReadDto>>> GetUnreadNotificationsByOfficer(string officerId)
@@ -75,6 +87,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid citizen ID");
 
             var notifications = await _service.GetNotificationsByCitizenAsync(citizenId);
+            return Ok(notifications);
+        }
+
+        [HttpPost("citizen")]
+        [Authorize(Roles = "Admin,Citizen")]  
+        public async Task<ActionResult<IEnumerable<NotificationDto.NotificationReadDto>>> GetNotificationsByCitizenPayload([FromBody] CitizenIdRequest request)
+        {
+            if (string.IsNullOrEmpty(request.CitizenId))
+                return BadRequest("Invalid citizen ID");
+
+            var notifications = await _service.GetNotificationsByCitizenAsync(request.CitizenId);
             return Ok(notifications);
         }
 
@@ -116,6 +139,17 @@ namespace SmartComplaint.Controllers
                 return BadRequest("Invalid notification ID");
 
             var notification = await _service.MarkAsReadAsync(id);
+            return notification == null ? NotFound() : Ok(notification);
+        }
+
+        [HttpPut("read")]
+        [Authorize(Roles = "Citizen,Officer")]  
+        public async Task<ActionResult<NotificationDto.NotificationReadDto>> MarkAsReadPayload([FromBody] NotificationIdRequest request)
+        {
+            if (request.NotificationId <= 0)
+                return BadRequest("Invalid notification ID");
+
+            var notification = await _service.MarkAsReadAsync(request.NotificationId);
             return notification == null ? NotFound() : Ok(notification);
         }
 

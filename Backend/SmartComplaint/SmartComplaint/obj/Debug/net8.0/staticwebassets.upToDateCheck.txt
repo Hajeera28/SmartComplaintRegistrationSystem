@@ -33,3 +33,4 @@ wwwroot\uploads\e35bc870-a6cd-4656-a7c6-25490b31ea87_watertax.avif
 wwwroot\uploads\ec9042be-dfb5-4029-9599-12ecac1397cd_water.jpg
 wwwroot\officer-uploads\09b1b38c-e9a3-473c-bd19-af2005f0b22e_voteridproof.jpg
 wwwroot\proofs\28bf2a3e-e851-49fb-9ef7-203af8c30cbb_voteridproof.jpg
+wwwroot\proofs\2859ddfa-44bb-4524-870e-e7b08b42e5fc_voteridproof.jpg

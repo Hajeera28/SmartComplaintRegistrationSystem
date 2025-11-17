@@ -203,6 +203,58 @@
     ]
   },
   {
+    "ContainingType": "SmartComplaint.Controllers.CitizenController",
+    "Method": "GetCitizenProfile",
+    "RelativePath": "api/Citizen/profile",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.CitizenIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.CitizenDto\u002BCitizenReadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.CitizenController",
+    "Method": "UpdateCitizenProfile",
+    "RelativePath": "api/Citizen/update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SmartComplaint.DTOs.CitizenDto\u002BCitizenUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.CitizenDto\u002BCitizenReadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "SmartComplaint.Controllers.ComplaintController",
     "Method": "CreateComplaint",
     "RelativePath": "api/Complaint",
@@ -368,6 +420,32 @@
   },
   {
     "ContainingType": "SmartComplaint.Controllers.ComplaintController",
+    "Method": "GetComplaintsByCitizenPayload",
+    "RelativePath": "api/Complaint/citizen",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.CitizenIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.ComplaintDto\u002BComplaintReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.ComplaintController",
     "Method": "GetComplaintsByCitizen",
     "RelativePath": "api/Complaint/citizen/{citizenId}",
     "HttpMethod": "GET",
@@ -377,6 +455,58 @@
       {
         "Name": "citizenId",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.ComplaintDto\u002BComplaintReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.ComplaintController",
+    "Method": "GetComplaintByIdPayload",
+    "RelativePath": "api/Complaint/details",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.ComplaintIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.ComplaintDto\u002BComplaintReadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.ComplaintController",
+    "Method": "GetComplaintsByOfficerPayload",
+    "RelativePath": "api/Complaint/officer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
         "IsRequired": true
       }
     ],
@@ -409,6 +539,47 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.ComplaintDto\u002BComplaintReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.ComplaintController",
+    "Method": "UpdateComplaintStatusPayload",
+    "RelativePath": "api/Complaint/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ComplaintId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OfficerRemarks",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "OfficerImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.ComplaintDto\u002BComplaintReadDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -730,6 +901,32 @@
   },
   {
     "ContainingType": "SmartComplaint.Controllers.GrievanceController",
+    "Method": "GetGrievancesByCitizenPayload",
+    "RelativePath": "api/Grievance/citizen",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.CitizenIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.GrievanceDto\u002BGrievanceReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.GrievanceController",
     "Method": "GetGrievancesByCitizen",
     "RelativePath": "api/Grievance/citizen/{citizenId}",
     "HttpMethod": "GET",
@@ -756,6 +953,32 @@
   },
   {
     "ContainingType": "SmartComplaint.Controllers.GrievanceController",
+    "Method": "CheckGrievanceExistsPayload",
+    "RelativePath": "api/Grievance/exists",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.ComplaintIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.GrievanceController",
     "Method": "CheckGrievanceExists",
     "RelativePath": "api/Grievance/exists/{complaintId}",
     "HttpMethod": "GET",
@@ -771,6 +994,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.GrievanceController",
+    "Method": "GetGrievancesByOfficerPayload",
+    "RelativePath": "api/Grievance/officer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.GrievanceDto\u002BGrievanceReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -831,6 +1080,47 @@
       },
       {
         "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.GrievanceDto\u002BGrievanceReadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.GrievanceController",
+    "Method": "UpdateGrievanceStatusPayload",
+    "RelativePath": "api/Grievance/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "GrievanceId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StatusId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OfficerRemarks",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "OfficerImage",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
@@ -968,6 +1258,32 @@
   },
   {
     "ContainingType": "SmartComplaint.Controllers.NotificationController",
+    "Method": "GetNotificationsByCitizenPayload",
+    "RelativePath": "api/Notification/citizen",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.CitizenIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.NotificationDto\u002BNotificationReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.NotificationController",
     "Method": "GetNotificationsByCitizen",
     "RelativePath": "api/Notification/citizen/{citizenId}",
     "HttpMethod": "GET",
@@ -1019,6 +1335,32 @@
       {
         "Name": "citizenId",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.NotificationDto\u002BNotificationReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.NotificationController",
+    "Method": "GetNotificationsByOfficerPayload",
+    "RelativePath": "api/Notification/officer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
         "IsRequired": true
       }
     ],
@@ -1093,6 +1435,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.NotificationDto\u002BNotificationReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.NotificationController",
+    "Method": "MarkAsReadPayload",
+    "RelativePath": "api/Notification/read",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.NotificationIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.NotificationDto\u002BNotificationReadDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1234,6 +1602,54 @@
   },
   {
     "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "ApproveOfficerPayload",
+    "RelativePath": "api/Officer/approve",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "DeleteOfficerPayload",
+    "RelativePath": "api/Officer/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "DenyOfficerPayload",
+    "RelativePath": "api/Officer/deny",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
     "Method": "GetOfficersByDepartment",
     "RelativePath": "api/Officer/department/{departmentId}",
     "HttpMethod": "GET",
@@ -1269,6 +1685,32 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.OfficerDto\u002BOfficerReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "GetOfficerProfile",
+    "RelativePath": "api/Officer/profile",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.OfficerIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.OfficerDto\u002BOfficerReadDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1346,6 +1788,58 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[SmartComplaint.DTOs.OfficerDto\u002BOfficerReadDto, SmartComplaint, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "UpdateOfficerProfile",
+    "RelativePath": "api/Officer/update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SmartComplaint.DTOs.OfficerDto\u002BOfficerUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.OfficerDto\u002BOfficerReadDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SmartComplaint.Controllers.OfficerController",
+    "Method": "GetOfficerByUserIdPayload",
+    "RelativePath": "api/Officer/user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "SmartComplaint.Models.UserIdRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SmartComplaint.DTOs.OfficerDto\u002BOfficerReadDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

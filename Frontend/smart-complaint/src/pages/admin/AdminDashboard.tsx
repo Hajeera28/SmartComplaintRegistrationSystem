@@ -200,15 +200,12 @@ export default function AdminDashboard() {
       message: 'Are you sure you want to delete this department? This action cannot be undone.',
       onConfirm: async () => {
         try {
-          console.log('Attempting to delete department with ID:', departmentId);
+
           await deleteDepartment(departmentId);
           setDepartments(departments.filter(dept => dept.departmentId !== departmentId));
           toast.success('Department deleted successfully!');
         } catch (error: any) {
-          console.error('Failed to delete department:', error);
-          console.error('Error response:', error?.response);
-          console.error('Error status:', error?.response?.status);
-          console.error('Error data:', error?.response?.data);
+
           toast.error(error?.response?.data?.message || `Failed to delete department. Status: ${error?.response?.status || 'Unknown'}`);
         }
         setConfirmDialog({ open: false, title: '', message: '', onConfirm: () => {} });
@@ -715,7 +712,7 @@ export default function AdminDashboard() {
         </Paper>
         
         {/* Add Department/Category Dialog */}
-        <Dialog open={addDialog.open} onClose={() => setAddDialog({ open: false, type: '', item: '', departmentId: 0 })} maxWidth="sm" fullWidth>
+        <Dialog open={addDialog.open} onClose={() => setAddDialog({ open: false, type: '', item: '', description: '', departmentId: 0 })} maxWidth="sm" fullWidth>
           <DialogTitle>
             Add New {addDialog.type === 'department' ? 'Department' : `Category to ${departments.find(d => d.departmentId === addDialog.departmentId)?.departmentName}`}
           </DialogTitle>

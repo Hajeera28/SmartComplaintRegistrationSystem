@@ -6,7 +6,6 @@ import {
   Typography,
   TextField,
   Button,
-  Grid,
   Avatar,
   Divider,
   Alert,
@@ -63,12 +62,11 @@ export default function OfficerProfile() {
         email: profile.email
       };
       
-      console.log('Sending officer update data:', updateData);
+
       await updateOfficerProfile(officerId, updateData);
       setMessage('Profile updated successfully!');
     } catch (error: any) {
-      console.error('Failed to update profile:', error);
-      console.error('Error response:', error.response?.data);
+
       setMessage('Failed to update profile');
     } finally {
       setSaving(false);
@@ -113,8 +111,8 @@ export default function OfficerProfile() {
             </Alert>
           )}
 
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+          <Box display="flex" flexDirection="column" gap={3}>
+            <Box display="flex" gap={3} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField
                 fullWidth
                 label="Name"
@@ -128,8 +126,6 @@ export default function OfficerProfile() {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Email"
@@ -144,9 +140,9 @@ export default function OfficerProfile() {
                   }
                 }}
               />
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} sm={6}>
+            <Box display="flex" gap={3} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField
                 fullWidth
                 label="Department"
@@ -160,14 +156,12 @@ export default function OfficerProfile() {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Role"
-                value={profile.role}
+                label="State"
+                value="Tamil Nadu"
                 disabled
-                helperText="Role is assigned by administration"
+                helperText="State is fixed for this deployment"
                 sx={{
                   '& .MuiInputBase-input': {
                     fontWeight: 600,
@@ -175,8 +169,22 @@ export default function OfficerProfile() {
                   }
                 }}
               />
-            </Grid>
-          </Grid>
+            </Box>
+            
+            <TextField
+              fullWidth
+              label="Role"
+              value={profile.role}
+              disabled
+              helperText="Role is assigned by administration"
+              sx={{
+                '& .MuiInputBase-input': {
+                  fontWeight: 600,
+                  color: '#1e293b'
+                }
+              }}
+            />
+          </Box>
 
 
         </Paper>

@@ -1,0 +1,94 @@
+/* Common Card Styles */
+.stat-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
+}
+
+.complaint-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid #e2e8f0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.complaint-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
+}
+
+/* Button Styles */
+.small-button {
+  text-transform: none !important;
+  font-size: 0.875rem !important;
+}
+
+.no-transform-button {
+  text-transform: none !important;
+}
+
+/* Layout Styles */
+.page-container {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
+
+.content-background {
+  background-color: #f1f5f9 !important;
+  flex: 1 !important;
+  padding: 32px 0 !important;
+}
+
+.center-text {
+  text-align: center !important;
+}
+
+.card-content-center {
+  text-align: center !important;
+  padding: 24px !important;
+}
+
+/* Avatar Styles */
+.stat-avatar {
+  margin: 0 auto 16px auto !important;
+  width: 56px !important;
+  height: 56px !important;
+}
+
+/* Floating Action Button */
+.fixed-fab {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  background-color: #3b82f6 !important;
+}
+
+.fixed-fab:hover {
+  background-color: #2563eb !important;
+}
+
+/* Image Styles */
+.evidence-image {
+  max-width: 300px !important;
+  max-height: 200px !important;
+  border-radius: 8px !important;
+  object-fit: contain !important;
+}
+
+.officer-image {
+  max-width: 300px !important;
+  max-height: 200px !important;
+  border-radius: 8px !important;
+  object-fit: contain !important;
+  border: 1px solid #e2e8f0 !important;
+}

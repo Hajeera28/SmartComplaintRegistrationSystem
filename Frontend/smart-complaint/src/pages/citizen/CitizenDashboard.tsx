@@ -136,7 +136,7 @@ export default function CitizenDashboard() {
         return;
       }
       const data = await getComplaintsByCitizen(citizenId);
-      console.log('Complaints loaded:', data);
+
       setComplaints(data || []);
     } catch (error: any) {
       console.error("Failed to load complaints:", error);
