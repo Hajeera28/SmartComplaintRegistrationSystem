@@ -244,7 +244,7 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      label="Complaint Title"
+                      label="Complaint Title *"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       fullWidth
@@ -262,7 +262,7 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      label="Description"
+                      label="Description *"
                       multiline
                       rows={3}
                       value={formData.description}
@@ -283,7 +283,7 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      label="Location"
+                      label="Location *"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                       fullWidth
@@ -314,7 +314,7 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                   <Grid item xs={12} sm={6}>
                     <TextField
                       select
-                      label="Department"
+                      label="Department *"
                       value={formData.departmentId}
                       onChange={(e) => setFormData({ ...formData, departmentId: Number(e.target.value) })}
                       fullWidth
@@ -343,7 +343,7 @@ export default function CreateComplaintDialog({ open, onClose, onSuccess, citize
                   <Grid item xs={12} sm={6}>
                     <TextField
                       select
-                      label="Category"
+                      label="Category *"
                       value={formData.categoryId}
                       onChange={(e) => setFormData({ ...formData, categoryId: Number(e.target.value) })}
                       fullWidth

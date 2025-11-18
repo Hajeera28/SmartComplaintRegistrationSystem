@@ -34,3 +34,6 @@ wwwroot\uploads\ec9042be-dfb5-4029-9599-12ecac1397cd_water.jpg
 wwwroot\officer-uploads\09b1b38c-e9a3-473c-bd19-af2005f0b22e_voteridproof.jpg
 wwwroot\proofs\28bf2a3e-e851-49fb-9ef7-203af8c30cbb_voteridproof.jpg
 wwwroot\proofs\2859ddfa-44bb-4524-870e-e7b08b42e5fc_voteridproof.jpg
+wwwroot\proofs\8c200aaf-a315-4f8b-9e6a-e5081005ac98_voteridproof.jpg
+wwwroot\uploads\84bd9e4a-a968-4f04-b040-9e096bc2d8eb_waterissue.jpg
+wwwroot\officer-uploads\3091da46-4428-43cf-9de8-70106fffac0a_waterissuefix.jpeg

@@ -584,9 +584,9 @@ export default function OfficerDashboard() {
               <Typography variant="h4" fontWeight={600} mb={2} sx={{ opacity: 0.9 }}>
                 Welcome back, {tokenstore.getUsername() || 'Officer'}!
               </Typography>
-              <Typography variant="h6" sx={{ opacity: 0.9, mb: 1 }}>
+              {/* <Typography variant="h6" sx={{ opacity: 0.9, mb: 1 }}>
                 {officerRole === 5 ? '🏛️ Commissioner Dashboard' : officerRole === 4 ? '🌟 Regional Head Dashboard' : officerRole === 3 ? '🏢 Department Head Dashboard' : officerRole === 2 ? '👨‍💼 Senior Officer Dashboard' : '👮‍♂️ Field Officer Dashboard'}
-              </Typography>
+              </Typography> */}
               <Typography variant="body1" sx={{ opacity: 0.85 }}>
                 {officerRole === 5 ? 'Oversee all operations, review complaints and manage grievances across the system' : 
                  officerRole === 4 ? 'Monitor regional operations and handle escalated matters efficiently' :
@@ -621,20 +621,20 @@ export default function OfficerDashboard() {
 
         {/* Statistics Cards */}
         {tabValue === 0 && (
-        <Grid container spacing={4} mb={4}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Box sx={{ display: 'flex', gap: 4, mb: 4, flexWrap: 'wrap' }}>
+          <Box sx={{ flex: '1 1 250px', minWidth: '250px' }}>
             <StatCard title={officerRole === 5 ? "Total" : "Assigned"} value={stats.assigned} color="#3b82f6" icon={<Assignment />} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ flex: '1 1 250px', minWidth: '250px' }}>
             <StatCard title="Pending" value={stats.pending} color="#f59e0b" icon={<Pending />} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ flex: '1 1 250px', minWidth: '250px' }}>
             <StatCard title="In Progress" value={stats.inProgress} color="#06b6d4" icon={<PlayArrow />} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          </Box>
+          <Box sx={{ flex: '1 1 250px', minWidth: '250px' }}>
             <StatCard title="Resolved" value={stats.resolved} color="#10b981" icon={<CheckCircle />} />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         )}
 
         {/* Assigned Complaints Table */}
@@ -755,23 +755,23 @@ export default function OfficerDashboard() {
         {tabValue === 1 && officerRole !== 1 && (
           <>
             {/* Grievance Statistics Cards */}
-            <Grid container spacing={4} mb={4}>
-              <Grid item xs={12} sm={6} md={2.4}>
+            <Box sx={{ display: 'flex', gap: 3, mb: 4, flexWrap: 'wrap' }}>
+              <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                 <StatCard title="Total" value={grievanceStats.total} color="#3b82f6" icon={<Warning />} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={2.4}>
+              </Box>
+              <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                 <StatCard title="Pending" value={grievanceStats.pending} color="#f59e0b" icon={<Pending />} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={2.4}>
+              </Box>
+              <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                 <StatCard title="Under Review" value={grievanceStats.underReview} color="#06b6d4" icon={<PlayArrow />} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={2.4}>
+              </Box>
+              <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                 <StatCard title="Resolved" value={grievanceStats.resolved} color="#10b981" icon={<CheckCircle />} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={2.4}>
+              </Box>
+              <Box sx={{ flex: '1 1 200px', minWidth: '200px' }}>
                 <StatCard title="Rejected" value={grievanceStats.rejected} color="#ef4444" icon={<Warning />} />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
             
             <Paper elevation={0} sx={{ borderRadius: 3, overflow: "hidden" }}>
               <Box sx={{ p: 3, bgcolor: "#f8fafc", borderBottom: "1px solid #e5e7eb" }}>

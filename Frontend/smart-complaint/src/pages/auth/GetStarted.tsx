@@ -357,7 +357,7 @@ export default function GetStarted() {
     <form onSubmit={handleLogin}>
       <Stack spacing={3}>
         <TextField
-          label="Email Address"
+          label="Email Address *"
           type="email"
           variant="outlined"
           value={loginData.email}
@@ -369,7 +369,7 @@ export default function GetStarted() {
         />
         
         <TextField
-          label="Password"
+          label="Password *"
           type="password"
           variant="outlined"
           value={loginData.password}
@@ -411,7 +411,7 @@ export default function GetStarted() {
         <Stack spacing={2.5}>
 
           <TextField
-            label="Full Name"
+            label="Full Name *"
             value={registerData.name}
             onChange={(e) => handleRegisterChange("name", e.target.value)}
             error={!!registerErrors.name}
@@ -421,7 +421,7 @@ export default function GetStarted() {
           />
           
           <TextField
-            label="Email Address"
+            label="Email Address *"
             type="email"
             value={registerData.email}
             onChange={(e) => handleRegisterChange("email", e.target.value)}
@@ -433,7 +433,7 @@ export default function GetStarted() {
           
           <Box display="flex" gap={2}>
             <TextField
-              label="Password"
+              label="Password *"
               type="password"
               value={registerData.password}
               onChange={(e) => handleRegisterChange("password", e.target.value)}
@@ -443,7 +443,7 @@ export default function GetStarted() {
               sx={getFieldSx(isCitizen ? '#10b981' : '#f59e0b')}
             />
             <TextField
-              label="Confirm Password"
+              label="Confirm Password *"
               type="password"
               value={registerData.confirmPassword}
               onChange={(e) => handleRegisterChange("confirmPassword", e.target.value)}
@@ -458,7 +458,7 @@ export default function GetStarted() {
             <>
               <Box display="flex" gap={2}>
                 <TextField
-                  label="Phone Number"
+                  label="Phone Number *"
                   value={registerData.phone}
                   onChange={(e) => handleRegisterChange("phone", e.target.value)}
                   error={!!registerErrors.phone}
@@ -476,7 +476,7 @@ export default function GetStarted() {
               </Box>
               
               <TextField
-                label="Address"
+                label="Address *"
                 multiline
                 rows={2}
                 value={registerData.address}
@@ -502,7 +502,7 @@ export default function GetStarted() {
               <Box display="flex" gap={2}>
                 <TextField
                   select
-                  label="Department"
+                  label="Department *"
                   value={registerData.departmentId}
                   onChange={(e) => handleRegisterChange("departmentId", Number(e.target.value))}
                   fullWidth
@@ -516,7 +516,7 @@ export default function GetStarted() {
                 </TextField>
                 <TextField
                   select
-                  label="Officer Role"
+                  label="Officer Role *"
                   value={registerData.role}
                   onChange={(e) => handleRegisterChange("role", Number(e.target.value))}
                   fullWidth

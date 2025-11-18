@@ -32,22 +32,35 @@ export default function AppNavbar() {
       borderBottom: '3px solid #000080'
     }}>
       <Toolbar>
-        <Typography
+        <Box 
           onClick={handleProfileClick}
           sx={{ 
-            fontSize: '1rem',
-            fontWeight: 700,
-            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
             mr: 2,
             cursor: 'pointer',
-            textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
             '&:hover': {
               opacity: 0.8
             }
           }}
         >
-          {getUserName()} ({userRole})
-        </Typography>
+          <Person sx={{ 
+            fontSize: '1.2rem', 
+            color: '#ffffff',
+            textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+          }} />
+          <Typography
+            sx={{ 
+              fontSize: '1rem',
+              fontWeight: 700,
+              color: '#ffffff',
+              textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+            }}
+          >
+            {getUserName()} ({userRole})
+          </Typography>
+        </Box>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1, justifyContent: 'center' }}>
           <AccountBalance sx={{ fontSize: 32, color: '#000080' }} />

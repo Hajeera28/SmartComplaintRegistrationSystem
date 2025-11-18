@@ -18,9 +18,7 @@ export async function getNotificationsByOfficer(officerId: string): Promise<Noti
 }
 
 export async function getUnreadNotificationsByOfficer(officerId: string): Promise<Notification[]> {
-  const { data } = await http.get<Notification[]>(`/Notification/officer/${officerId}/unread`, {
-    metadata: { name: 'GetUnreadOfficerNotifications' }
-  });
+  const { data } = await http.get<Notification[]>(`/Notification/officer/${officerId}/unread`);
   return data;
 }
 
@@ -30,9 +28,7 @@ export async function markNotificationAsRead(notificationId: number): Promise<vo
 }
 
 export async function markAllNotificationsAsRead(officerId: string): Promise<void> {
-  await http.put(`/Notification/officer/${officerId}/read-all`, {}, {
-    metadata: { name: 'MarkAllOfficerNotificationsRead' }
-  });
+  await http.put(`/Notification/officer/${officerId}/read-all`, {});
 }
 
 export async function getNotificationsByCitizen(citizenId: string): Promise<Notification[]> {
@@ -42,14 +38,10 @@ export async function getNotificationsByCitizen(citizenId: string): Promise<Noti
 }
 
 export async function getUnreadNotificationsByCitizen(citizenId: string): Promise<Notification[]> {
-  const { data } = await http.get<Notification[]>(`/Notification/citizen/${citizenId}/unread`, {
-    metadata: { name: 'GetUnreadCitizenNotifications' }
-  });
+  const { data } = await http.get<Notification[]>(`/Notification/citizen/${citizenId}/unread`);
   return data;
 }
 
 export async function markAllNotificationsAsReadByCitizen(citizenId: string): Promise<void> {
-  await http.put(`/Notification/citizen/${citizenId}/read-all`, {}, {
-    metadata: { name: 'MarkAllCitizenNotificationsRead' }
-  });
+  await http.put(`/Notification/citizen/${citizenId}/read-all`, {});
 }

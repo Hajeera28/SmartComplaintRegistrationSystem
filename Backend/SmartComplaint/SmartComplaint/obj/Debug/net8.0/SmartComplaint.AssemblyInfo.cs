@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartComplaint")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b296b8074479b77d7833b20bef0a41e2527cd6e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b8d8ddca6c0dec1d131b9c8a3a7f9e7ae205d5f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartComplaint")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartComplaint")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
