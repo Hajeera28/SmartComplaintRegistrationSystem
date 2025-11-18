@@ -3789,6 +3789,7 @@
       "CitizenCreateDto": {
         "required": [
           "address",
+          "district",
           "email",
           "name",
           "password",
@@ -3813,6 +3814,11 @@
           },
           "address": {
             "maxLength": 200,
+            "minLength": 0,
+            "type": "string"
+          },
+          "district": {
+            "maxLength": 50,
             "minLength": 0,
             "type": "string"
           },
@@ -3857,6 +3863,10 @@
             "type": "string",
             "nullable": true
           },
+          "district": {
+            "type": "string",
+            "nullable": true
+          },
           "username": {
             "type": "string",
             "nullable": true
@@ -3875,6 +3885,7 @@
       "CitizenRegistrationDto": {
         "required": [
           "address",
+          "district",
           "email",
           "name",
           "password",
@@ -3915,6 +3926,11 @@
             "maxLength": 50,
             "minLength": 2,
             "type": "string"
+          },
+          "district": {
+            "maxLength": 50,
+            "minLength": 2,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -3946,6 +3962,12 @@
           },
           "address": {
             "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "district": {
+            "maxLength": 50,
             "minLength": 0,
             "type": "string",
             "nullable": true

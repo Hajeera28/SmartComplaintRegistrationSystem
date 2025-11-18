@@ -41,6 +41,8 @@ namespace SmartComplaint.Services
                 Email = dto.Email,
                 Phone = dto.Phone,
                 Address = dto.Address,
+                District = dto.District,
+                State = "Tamil Nadu",
                 UserId = createdUser.UserId
             };
 
@@ -99,7 +101,9 @@ namespace SmartComplaint.Services
                 Name = dto.Name,
                 Email = dto.Email,
                 Phone = dto.Phone,
-                Address = dto.Address
+                Address = dto.Address,
+                District = dto.District ?? existingCitizen.District,
+                State = "Tamil Nadu"
             };
 
             var updated = await _repository.UpdateAsync(citizen);
@@ -120,6 +124,7 @@ namespace SmartComplaint.Services
                 Email = citizen.Email,
                 Phone = citizen.Phone,
                 Address = citizen.Address,
+                District = citizen.District,
                 Username = citizen.User?.Username ?? "N/A",
                 ComplaintCount = citizen.Complaints?.Count ?? 0,
                 GrievanceCount = citizen.Grievances?.Count ?? 0

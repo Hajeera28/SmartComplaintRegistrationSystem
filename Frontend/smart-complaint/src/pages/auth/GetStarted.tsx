@@ -30,6 +30,7 @@ import {
   AccountBalance
 } from "@mui/icons-material";
 import Footer from "../../components/Footer";
+import { TAMIL_NADU_DISTRICTS } from "../../constants/districts";
 
 export default function GetStarted() {
   const navigate = useNavigate();
@@ -38,10 +39,14 @@ export default function GetStarted() {
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-    loadDepartments();
-  }, []);
+    // Only load departments when officer registration card is active
+    if (currentCard === 2) {
+      loadDepartments();
+    }
+  }, [currentCard]);
 
   const loadDepartments = async () => {
+    if (departments.length > 0) return; // Don't reload if already loaded
     try {
       const data = await getDepartments();
       setDepartments(data);
@@ -69,6 +74,7 @@ export default function GetStarted() {
     phone: "",
     address: "",
     state: "Tamil Nadu",
+    district: "",
     departmentId: 1,
     role: 1,
     userType: "citizen"
@@ -83,6 +89,7 @@ export default function GetStarted() {
     phone: "",
     address: "",
     state: "",
+    district: "",
     proofDocument: ""
   });
 
@@ -244,6 +251,9 @@ export default function GetStarted() {
       case "address":
         error = !stringValue.trim() ? "Address is required" : "";
         break;
+      case "district":
+        error = !stringValue.trim() ? "District is required" : "";
+        break;
       case "state":
         
         break;
@@ -286,6 +296,7 @@ export default function GetStarted() {
       phone: isCitizen ? validatePhone(registerData.phone) : "",
       address: isCitizen ? (!registerData.address.trim() ? "Address is required" : "") : "",
       state: "", // State is static, no validation needed
+      district: isCitizen ? (!registerData.district.trim() ? "District is required" : "") : "",
       proofDocument: !isCitizen && !proofFile ? "Proof document is required" : ""
     };
     
@@ -304,6 +315,7 @@ export default function GetStarted() {
           password: registerData.password,
           phone: registerData.phone,
           address: registerData.address.trim(),
+          district: registerData.district.trim(),
           state: "Tamil Nadu",
         });
       } else {
@@ -456,16 +468,17 @@ export default function GetStarted() {
 
           {isCitizen && (
             <>
+              <TextField
+                label="Phone Number *"
+                value={registerData.phone}
+                onChange={(e) => handleRegisterChange("phone", e.target.value)}
+                error={!!registerErrors.phone}
+                helperText={registerErrors.phone}
+                fullWidth
+                sx={getFieldSx('#10b981')}
+              />
+              
               <Box display="flex" gap={2}>
-                <TextField
-                  label="Phone Number *"
-                  value={registerData.phone}
-                  onChange={(e) => handleRegisterChange("phone", e.target.value)}
-                  error={!!registerErrors.phone}
-                  helperText={registerErrors.phone}
-                  fullWidth
-                  sx={getFieldSx('#10b981')}
-                />
                 <TextField
                   label="State"
                   value="Tamil Nadu"
@@ -473,6 +486,22 @@ export default function GetStarted() {
                   fullWidth
                   sx={getFieldSx('#10b981')}
                 />
+                <TextField
+                  select
+                  label="District *"
+                  value={registerData.district}
+                  onChange={(e) => handleRegisterChange("district", e.target.value)}
+                  error={!!registerErrors.district}
+                  helperText={registerErrors.district}
+                  fullWidth
+                  sx={getFieldSx('#10b981')}
+                >
+                  {TAMIL_NADU_DISTRICTS.map((district) => (
+                    <MenuItem key={district} value={district}>
+                      {district}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Box>
               
               <TextField

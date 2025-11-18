@@ -9,12 +9,14 @@ import {
   Grid,
   Avatar,
   Divider,
-  Fab
+  Fab,
+  MenuItem
 } from '@mui/material';
 import { Person, Save, ArrowBack, Dashboard as DashboardIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getCitizenProfile, updateCitizenProfile, type CitizenProfile } from '../../api/profile.api';
+import { TAMIL_NADU_DISTRICTS } from '../../constants/districts';
 import { tokenstore } from '../../auth/tokenstore';
 import AppNavbar from '../../components/AppNavbar';
 
@@ -26,7 +28,8 @@ export default function CitizenProfile() {
     email: '',
     phone: '',
     address: '',
-    state: ''
+    state: '',
+    district: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,7 +54,8 @@ export default function CitizenProfile() {
         email: data.email || data.Email || '',
         phone: data.phone || data.Phone || '',
         address: data.address || data.Address || '',
-        state: "Tamil Nadu"
+        state: "Tamil Nadu",
+        district: data.district || data.District || ''
       });
     } catch (error) {
       console.error('Failed to load profile:', error);
@@ -86,7 +90,8 @@ export default function CitizenProfile() {
         name: profile.name.trim(),
         email: profile.email.trim(),
         phone: profile.phone.trim(),
-        address: profile.address.trim()
+        address: profile.address.trim(),
+        district: profile.district.trim()
       };
       
 
@@ -171,6 +176,21 @@ export default function CitizenProfile() {
                 value="Tamil Nadu"
                 disabled
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                select
+                fullWidth
+                label="District"
+                value={profile.district}
+                onChange={(e) => setProfile({ ...profile, district: e.target.value })}
+              >
+                {TAMIL_NADU_DISTRICTS.map((district) => (
+                  <MenuItem key={district} value={district}>
+                    {district}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField

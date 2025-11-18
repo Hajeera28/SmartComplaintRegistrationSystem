@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartComplaint.Data;
 
@@ -11,9 +12,11 @@ using SmartComplaint.Data;
 namespace SmartComplaint.Migrations
 {
     [DbContext(typeof(ComplaintContext))]
-    partial class ComplaintContextModelSnapshot : ModelSnapshot
+    [Migration("20251118093457_AddDistrictToCitizen")]
+    partial class AddDistrictToCitizen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

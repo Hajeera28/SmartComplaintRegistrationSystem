@@ -29,6 +29,10 @@ namespace SmartComplaint.Models
         [StringLength(50)]
         public string State { get; set; }
 
+        [Required(ErrorMessage = "District is required.")]
+        [StringLength(50)]
+        public string District { get; set; }
+
         [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }

@@ -43,6 +43,10 @@ namespace SmartComplaint.DTOs
             [Required(ErrorMessage = "State is required.")]
             [StringLength(50, MinimumLength = 2, ErrorMessage = "State must be between 2 and 50 characters.")]
             public string State { get; set; }
+
+            [Required(ErrorMessage = "District is required.")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "District must be between 2 and 50 characters.")]
+            public string District { get; set; }
         }
 
         public class OfficerRegistrationDto

@@ -347,7 +347,6 @@ C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\De
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\staticwebassets.development.json
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartCom.F42D0CA6.Up2Date
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.dll
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\refint\SmartComplaint.dll
@@ -355,3 +354,4 @@ C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\De
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.genruntimeconfig.cache
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\ref\SmartComplaint.dll
 C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\SmartComplaint.sourcelink.json
+C:\KANINI\React\ReactProjectFolders\Backend\SmartComplaint\SmartComplaint\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

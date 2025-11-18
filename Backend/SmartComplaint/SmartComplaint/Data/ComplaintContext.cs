@@ -220,6 +220,7 @@ namespace SmartComplaint.Data
                     Phone = "9876543210",
                     Address = "12, Gandhi Street, Chennai",
                     State = "Tamil Nadu",
+                    District = "Chennai",
                     UserId = 3,
                     IsActive = true
                 }

@@ -7,6 +7,7 @@ export interface CitizenProfile {
   phone: string;
   address: string;
   state: string;
+  district: string;
 }
 
 export interface OfficerProfile {

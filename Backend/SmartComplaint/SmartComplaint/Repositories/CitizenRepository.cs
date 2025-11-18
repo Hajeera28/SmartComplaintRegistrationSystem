@@ -71,6 +71,7 @@ namespace SmartComplaint.Repositories
             existing.Email = citizen.Email;
             existing.Phone = citizen.Phone;
             existing.Address = citizen.Address;
+            existing.District = citizen.District;
 
             await _context.SaveChangesAsync();
             return await GetByIdAsync(existing.CitizenId);

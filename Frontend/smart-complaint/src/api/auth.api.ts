@@ -9,6 +9,7 @@ type CitizenRegisterRequest = {
   password: string;
   phone: string;
   address: string;
+  district: string;
   state: string;
 };
 

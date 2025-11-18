@@ -75,6 +75,7 @@ namespace SmartComplaint.Controllers
                 dto.Email = dto.Email?.Trim().ToLower();
                 dto.Address = dto.Address?.Trim();
                 dto.State = dto.State?.Trim();
+                dto.District = dto.District?.Trim();
                 dto.Phone = dto.Phone?.Trim();
 
                 // Check for existing email
@@ -113,6 +114,7 @@ namespace SmartComplaint.Controllers
                     Phone = dto.Phone,
                     Address = dto.Address,
                     State = dto.State,
+                    District = dto.District,
                     UserId = newUser.UserId
                 };
 

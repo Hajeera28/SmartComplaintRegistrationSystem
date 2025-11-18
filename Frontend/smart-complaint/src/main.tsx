@@ -18,7 +18,7 @@ import ComplaintAssignment from "./pages/admin/ComplaintAssignment";
 import CitizenProfile from "./pages/citizen/CitizenProfile";
 import OfficerProfile from "./pages/officer/OfficerProfile";
 import ComplaintHistory from "./pages/citizen/ComplaintHistory";
-import Services from "./pages/shared/Services";
+
 import React from "react";
 import { NotificationProvider } from "./contexts/NotificationContext";
 
@@ -31,8 +31,7 @@ const router = createBrowserRouter([
     children: [
       { path: "citizen", element: <CitizenDashboard /> },
       { path: "citizen/profile", element: <CitizenProfile /> },
-      { path: "complaint-history", element: <ComplaintHistory /> },
-      { path: "services", element: <Services /> }
+      { path: "complaint-history", element: <ComplaintHistory /> }
     ]
   },
   {

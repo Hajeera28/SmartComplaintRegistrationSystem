@@ -6,7 +6,7 @@ type Props = {
   redirectTo?: string;
 };
 
-export default function ProtectedRoute({ roles, redirectTo = "/login" }: Props) {
+export default function ProtectedRoute({ roles, redirectTo = "/get-started" }: Props) {
   const token = tokenstore.get();
   if (!token) return <Navigate to={redirectTo} replace />;
   
